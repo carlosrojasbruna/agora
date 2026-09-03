@@ -1,0 +1,2393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ágora · MAT1219 Álgebra Lineal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Slab:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* =========================================================================
+   Ágora · estilos según el Kit Digital UC (kitdigital.uc.cl)
+   Paleta, escala tipográfica, radios y sombras tomados del sistema oficial.
+   Tipografías: Roboto y Roboto Slab.
+   ========================================================================= */
+:root{
+  /* primaria */
+  --celeste:#0176DE; --azul:#173F8A; --azul-osc:#03122E;
+  --amarillo:#FEC60D; --amarillo-osc:#E3AE00;
+  /* secundaria */
+  --negro:#000000; --gris-a:#707070; --gris-b:#9C9C9C; --gris-c:#C6C6C6;
+  --claro-a:#EAEAEA; --claro-b:#F0F0F0; --claro-c:#F6F6F6; --blanco:#FFFFFF;
+  /* feedback */
+  --exito:#00AA00; --alerta:#E3AE00; --error:#F24F4F; --info:#0176DE;
+  /* roles */
+  --bg:var(--claro-c); --card:var(--blanco); --ink:var(--azul-osc); --muted:var(--gris-a);
+  --line:var(--claro-a); --brand:var(--azul); --brand2:var(--celeste); --accent:var(--amarillo);
+  --ok:var(--exito); --warn:var(--alerta); --bad:var(--error); --ia:var(--azul); --iabg:#EEF3FB;
+  --r:4px;
+  --sombra:0 2px 8px rgba(136,136,136,.18);
+  --sombra-modal:0 4px 20px rgba(0,0,0,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Roboto","Helvetica Neue",Arial,sans-serif;
+  background:var(--bg); color:var(--ink);
+  font-size:16px; line-height:24px; letter-spacing:.5px;
+  -webkit-text-size-adjust:100%; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,h5,h6{font-family:"Roboto Slab","Roboto",Georgia,serif;text-wrap:balance;margin:0}
+:focus-visible{outline:2px solid var(--celeste);outline-offset:2px;border-radius:2px}
+
+/* ---------------- barra superior institucional ---------------- */
+header{
+  background:var(--azul-osc); color:var(--blanco);
+  display:flex; align-items:center; gap:16px; padding:12px 24px;
+  position:sticky; top:0; z-index:30; flex-wrap:wrap;
+  border-bottom:3px solid var(--celeste);
+}
+header .logo{display:flex;align-items:center;gap:14px;min-width:0}
+header .logo img{height:30px;width:auto;display:block;flex:none}
+header .logo b{
+  font-family:"Roboto Slab",Georgia,serif; font-weight:700; font-size:20px;
+  letter-spacing:.18px; line-height:1; padding-left:14px; border-left:1px solid rgba(255,255,255,.3);
+}
+header .logo.sinlogo b{padding-left:0;border-left:0}
+header .logo span{font-size:14px;font-weight:400;letter-spacing:1px;opacity:.82;line-height:16px}
+header .logo span small{font-size:11px;letter-spacing:.5px}
+header .spacer{flex:1}
+header .who{
+  font-size:14px;font-weight:500;letter-spacing:1px;background:rgba(255,255,255,.12);
+  padding:6px 14px;border-radius:var(--r);white-space:nowrap
+}
+header .hbtn{
+  border:1px solid rgba(255,255,255,.45);background:transparent;color:var(--blanco);
+  padding:6px 14px;border-radius:var(--r);cursor:pointer;font-size:14px;font-family:inherit;
+  font-weight:500;letter-spacing:.5px
+}
+header .hbtn:hover{background:rgba(255,255,255,.14)}
+@media(max-width:680px){
+  header{gap:10px;padding:10px 16px}
+  header .logo span{display:none}
+  header .logo b{font-size:18px;padding-left:10px}
+  header .logo img{height:24px}
+}
+
+/* ---------------- barra de demostración ---------------- */
+.demobar{
+  background:var(--claro-a);color:var(--gris-a);font-size:14px;line-height:20px;letter-spacing:.28px;
+  padding:8px 24px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--gris-c)
+}
+.demobar b{color:var(--azul-osc);font-weight:500}
+.demobar button{
+  border:1px solid var(--gris-c);background:var(--blanco);color:var(--gris-a);
+  border-radius:var(--r);padding:4px 11px;font-size:13px;cursor:pointer;font-family:inherit;letter-spacing:.28px
+}
+.demobar button:hover{border-color:var(--celeste);color:var(--celeste)}
+.demobar button.on{background:var(--celeste);border-color:var(--celeste);color:var(--blanco);font-weight:500}
+
+/* ---------------- estructura ---------------- */
+main{padding:28px 24px 56px;max-width:800px;margin:0 auto}
+main.wide{max-width:1200px}
+@media(max-width:680px){main{padding:20px 16px 44px}}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:24px;margin-bottom:20px;box-shadow:var(--sombra)
+}
+@media(max-width:680px){.card{padding:18px}}
+.card h1{font-size:40px;line-height:48px;font-weight:700;letter-spacing:0;margin-bottom:8px;color:var(--azul-osc)}
+.card h2{font-size:24px;line-height:28px;font-weight:700;letter-spacing:.18px;margin-bottom:8px;color:var(--azul)}
+.card h3{font-size:18px;line-height:24px;font-weight:700;letter-spacing:.25px;margin:24px 0 8px;color:var(--azul-osc)}
+@media(max-width:680px){.card h1{font-size:32px;line-height:36px}}
+.sub{color:var(--muted);font-size:14px;line-height:20px;letter-spacing:.28px;margin-bottom:16px}
+p{margin:0 0 16px}
+p:last-child{margin-bottom:0}
+label{
+  display:block;font-size:14px;line-height:16px;font-weight:500;letter-spacing:1px;
+  margin:20px 0 6px;color:var(--azul-osc)
+}
+input[type=text],input[type=number],textarea,select{
+  width:100%;padding:11px 13px;border:1px solid var(--gris-c);border-radius:var(--r);
+  font-size:16px;line-height:24px;font-family:inherit;background:var(--blanco);color:var(--ink);letter-spacing:.5px
+}
+input[type=text]:focus,textarea:focus,select:focus{border-color:var(--celeste);outline:none;box-shadow:0 0 0 3px rgba(1,118,222,.15)}
+textarea{min-height:120px;resize:vertical}
+.btn{
+  display:inline-block;border:1px solid transparent;background:var(--celeste);color:var(--blanco);
+  padding:11px 22px;border-radius:var(--r);cursor:pointer;
+  font-size:16px;line-height:24px;font-weight:500;letter-spacing:.5px;font-family:inherit
+}
+.btn:hover{background:#0165bf}
+.btn.sec{background:var(--blanco);color:var(--celeste);border-color:var(--celeste)}
+.btn.sec:hover{background:var(--claro-c)}
+.btn.ok{background:var(--exito)}
+.btn.ok:hover{background:#009100}
+.btn.sm{padding:5px 13px;font-size:14px;line-height:20px;letter-spacing:.28px}
+.btn.block{display:block;width:100%}
+.btn:disabled{opacity:.4;cursor:not-allowed;background:var(--gris-b);border-color:transparent}
+.btn:disabled:hover{background:var(--gris-b)}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.grid{display:grid;gap:20px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.g2,.g3{grid-template-columns:1fr}}
+.muted{color:var(--muted)}
+.small{font-size:14px;line-height:20px;letter-spacing:.28px}
+.note{font-size:14px;line-height:20px;color:var(--muted);margin-top:10px;letter-spacing:.28px}
+.note a{color:var(--celeste);font-weight:500}
+.tag{
+  display:inline-block;font-size:14px;line-height:16px;font-weight:500;letter-spacing:1px;
+  background:var(--claro-b);border-radius:var(--r);padding:4px 10px;color:var(--gris-a);margin-right:6px
+}
+.pill{
+  display:inline-block;padding:3px 11px;border-radius:var(--r);
+  font-size:14px;line-height:20px;font-weight:500;letter-spacing:.28px
+}
+.pill.ok{background:#E6F6E6;color:#007A00}
+.pill.bad{background:#FDECEC;color:#C22B2B}
+.pill.warn{background:#FDF4DC;color:#8A6A00}
+.pill.gray{background:var(--claro-a);color:var(--gris-a)}
+hr{border:0;border-top:1px solid var(--line);margin:24px 0}
+code.k{background:var(--claro-b);padding:2px 6px;border-radius:var(--r);font-size:14px;font-family:"Roboto Mono",monospace}
+details{margin-top:12px}
+details summary{cursor:pointer;color:var(--celeste);font-size:16px;font-weight:500;letter-spacing:.5px}
+a{color:var(--celeste)}
+
+/* ---------------- progreso ---------------- */
+.topbar{
+  position:sticky;top:var(--hh,54px);z-index:20;background:var(--bg);
+  padding:14px 0 16px;border-bottom:1px solid var(--line);margin-bottom:20px
+}
+.topbar .line{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-bottom:8px;gap:12px;letter-spacing:.28px}
+.progress{height:8px;background:var(--claro-a);border-radius:var(--r);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--celeste);transition:width .45s ease}
+.stars-count{font-weight:700;color:var(--amarillo-osc);white-space:nowrap;letter-spacing:0}
+
+/* ---------------- pregunta ---------------- */
+.stem{font-size:18px;line-height:32px;letter-spacing:.5px;margin:14px 0 20px}
+.stem .katex-display{margin:.8em 0;overflow-x:auto;overflow-y:hidden;padding-bottom:4px}
+.opts{display:flex;flex-direction:column;gap:10px;margin:16px 0}
+.opt{
+  border:1px solid var(--gris-c);border-radius:var(--r);padding:14px 16px;cursor:pointer;
+  display:flex;gap:14px;align-items:flex-start;background:var(--blanco);transition:.15s;
+  text-align:left;font-family:inherit;font-size:16px;line-height:24px;letter-spacing:.5px;color:var(--ink);width:100%
+}
+.opt:hover:not(.locked){border-color:var(--celeste);background:#F5FAFF}
+.opt.sel{border-color:var(--celeste);border-width:2px;padding:13px 15px;background:#EAF4FE}
+.opt.right{border-color:var(--exito);border-width:2px;padding:13px 15px;background:#F1FAF1}
+.opt.wrong{border-color:var(--error);border-width:2px;padding:13px 15px;background:#FEF3F3}
+.opt.locked{cursor:default}
+.opt .L{font-weight:700;min-width:22px;color:var(--azul)}
+.opt.right .L{color:var(--exito)}.opt.wrong .L{color:var(--error)}
+.opt .txt{flex:1;overflow-x:auto}
+.opt .mark{font-weight:500;font-size:14px;letter-spacing:.28px;white-space:nowrap}
+
+/* ---------------- revelación ---------------- */
+.reveal{border-left:4px solid var(--celeste);background:var(--claro-c);padding:20px 22px;border-radius:0 var(--r) var(--r) 0}
+.reveal.bad{border-left-color:var(--error);background:#FEF6F6}
+.reveal.good{border-left-color:var(--exito);background:#F4FBF4}
+.reveal .verdict{font-family:"Roboto Slab",Georgia,serif;font-weight:700;font-size:20px;line-height:24px;letter-spacing:.25px;margin-bottom:12px}
+.reveal.good .verdict{color:#007A00}.reveal.bad .verdict{color:#C22B2B}
+.reveal .sol{font-size:16px;line-height:24px;letter-spacing:.5px}
+.reveal .sol .katex-display{overflow-x:auto;overflow-y:hidden}
+
+/* ---------------- rúbrica ---------------- */
+.crit{border:1px solid var(--line);border-radius:var(--r);padding:18px;margin:14px 0;background:var(--claro-c)}
+.crit .cn{font-weight:700;font-size:16px;line-height:24px;letter-spacing:.25px;margin-bottom:4px}
+.crit .ch{font-size:14px;line-height:20px;color:var(--muted);margin-bottom:12px;letter-spacing:.28px}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:640px){.levels{grid-template-columns:1fr}}
+.lv{
+  border:1px solid var(--gris-c);background:var(--blanco);border-radius:var(--r);padding:12px 14px;
+  cursor:pointer;font-size:14px;line-height:20px;letter-spacing:.28px;text-align:left;
+  font-family:inherit;color:var(--ink);transition:.15s
+}
+.lv:hover{border-color:var(--celeste);background:#F5FAFF}
+.lv.on{border-color:var(--celeste);border-width:2px;padding:11px 13px;background:#EAF4FE;font-weight:500}
+.lv .n{display:block;font-size:14px;line-height:16px;color:var(--gris-b);font-weight:500;margin-bottom:4px;letter-spacing:1px}
+.lv.on .n{color:var(--celeste)}
+.crit.cat .lv.on{border-color:var(--amarillo-osc);background:#FDF7E4}
+.crit.cat .lv.on .n{color:var(--amarillo-osc)}
+
+/* ---------------- comentario ---------------- */
+.counter{font-size:14px;line-height:20px;color:var(--muted);margin-top:8px;text-align:right;letter-spacing:.28px}
+.counter.ok{color:var(--exito);font-weight:500}
+
+/* ---------------- lista del curso ---------------- */
+.roster{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+@media(max-width:640px){.roster{grid-template-columns:1fr}}
+.rw{
+  display:flex;gap:12px;align-items:center;border:1px solid var(--gris-c);background:var(--blanco);
+  border-radius:var(--r);padding:11px 14px;cursor:pointer;font-family:inherit;font-size:14px;
+  line-height:20px;letter-spacing:.28px;color:var(--ink);text-align:left;width:100%
+}
+.rw:hover{border-color:var(--celeste);background:#F5FAFF}
+.rw.on{border-color:var(--celeste);border-width:2px;padding:10px 13px;background:#EAF4FE}
+.rw .rc{font-weight:700;color:var(--azul);letter-spacing:1px;white-space:nowrap;font-size:14px}
+.rw .rn{flex:1;line-height:20px}
+
+/* ---------------- chatbot ---------------- */
+.chat{border:1px solid var(--line);background:var(--iabg);border-radius:var(--r);overflow:hidden;margin-top:16px}
+.chat .hd{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--blanco)}
+.chat .hd .av{
+  width:26px;height:26px;border-radius:50%;background:var(--azul);color:var(--blanco);
+  display:grid;place-items:center;font-size:11px;flex:none
+}
+.chat .hd b{font-size:14px;line-height:16px;color:var(--azul);letter-spacing:1px;font-weight:500}
+.chat .body{max-height:280px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}
+.chat .msg{max-width:88%;padding:12px 15px;border-radius:var(--r);font-size:16px;line-height:24px;letter-spacing:.5px}
+.chat .msg.ia{background:var(--blanco);border:1px solid var(--line);align-self:flex-start}
+.chat .msg.yo{background:var(--celeste);color:var(--blanco);align-self:flex-end}
+.chat .msg.yo b{color:var(--blanco)}
+.chat .msg .acc{margin-top:10px}
+.chat .esc{font-size:14px;color:var(--azul);padding:0 16px 10px;letter-spacing:.28px}
+.chat .esc::after{content:"";animation:puntos 1.2s steps(4,end) infinite}
+@keyframes puntos{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+.chat .in{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--line);background:var(--blanco)}
+.chat .in input{flex:1}
+.sug{display:flex;gap:8px;flex-wrap:wrap;padding:0 16px 14px}
+.sug button{
+  font-size:14px;line-height:20px;border:1px solid var(--gris-c);background:var(--blanco);color:var(--celeste);
+  border-radius:var(--r);padding:7px 13px;cursor:pointer;font-family:inherit;text-align:left;letter-spacing:.28px;font-weight:500
+}
+.sug button:hover{border-color:var(--celeste);background:#F5FAFF}
+.chat.doc{margin-top:0}
+.chat.doc .body{max-height:440px}
+.chat .msg table{font-size:14px;margin-top:8px}
+.chat .msg ul{margin:8px 0 0 20px;padding:0}
+.chat .msg li{margin:4px 0}
+
+/* ---------------- síntesis y hallazgos ---------------- */
+.aibox{border-left:4px solid var(--azul);background:var(--iabg);padding:18px 20px;border-radius:0 var(--r) var(--r) 0;margin-top:18px}
+.aibox .t{font-weight:500;color:var(--azul);font-size:14px;line-height:16px;letter-spacing:1px;margin-bottom:10px;display:flex;align-items:center;gap:8px;text-transform:uppercase}
+.aibox ul{margin:10px 0 0 20px;padding:0;font-size:16px;line-height:24px}
+.aibox li{margin:6px 0}
+.aibox .cita{font-style:italic;color:var(--gris-a);background:var(--blanco);border-radius:var(--r);padding:12px 14px;margin:8px 0;font-size:14px;line-height:20px}
+.aibox .acc{font-size:14px;line-height:20px;color:var(--azul);font-weight:500;margin-bottom:6px;letter-spacing:.28px}
+.aibox .dis{font-size:14px;line-height:20px;color:var(--muted);margin-top:12px;border-top:1px solid var(--gris-c);padding-top:10px;letter-spacing:.28px}
+.find{border:1px solid var(--line);border-left-width:4px;border-radius:0 var(--r) var(--r) 0;padding:18px 20px;margin:12px 0;background:var(--blanco);box-shadow:var(--sombra)}
+.find.alta{border-left-color:var(--error)}
+.find.media{border-left-color:var(--alerta)}
+.find.info{border-left-color:var(--celeste)}
+.find .fh{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:8px;flex-wrap:wrap}
+.find .ft{font-family:"Roboto Slab",Georgia,serif;font-weight:700;font-size:18px;line-height:24px;letter-spacing:.25px}
+.find .fd{font-size:16px;line-height:24px;letter-spacing:.5px}
+.find .fa{font-size:14px;line-height:20px;color:var(--azul);font-weight:500;margin-top:10px;background:var(--iabg);padding:10px 12px;border-radius:var(--r);letter-spacing:.28px}
+
+/* ---------------- estrellas e insignias ---------------- */
+.starpop{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(3,18,46,.4);z-index:60;pointer-events:none;animation:fade .9s ease forwards}
+.starpop div{font-size:84px;animation:pop .9s cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes pop{0%{transform:scale(.2) rotate(-25deg);opacity:0}45%{transform:scale(1.15) rotate(6deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes fade{0%{opacity:0}25%{opacity:1}80%{opacity:1}100%{opacity:0}}
+.badges{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+.badge{border:1px solid var(--line);background:var(--blanco);border-radius:var(--r);padding:14px 12px;font-size:14px;line-height:20px;text-align:center;min-width:104px;opacity:.45}
+.badge.got{opacity:1;border-color:var(--amarillo-osc);background:#FDF9EC}
+.badge .ic{font-size:28px;display:block;line-height:1.2}
+.badge b{display:block;font-size:14px;margin-top:4px;letter-spacing:.28px}
+
+/* ---------------- tablas y datos ---------------- */
+table{width:100%;border-collapse:collapse;font-size:14px;line-height:20px;letter-spacing:.28px}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--claro-b);font-weight:500;color:var(--azul-osc);position:sticky;top:0;letter-spacing:1px;font-size:14px}
+tr:hover td{background:var(--claro-c)}
+td b,td .pill{font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.bar{display:grid;grid-template-columns:28px 1fr 88px;gap:12px;align-items:center;font-size:14px;margin:7px 0;letter-spacing:.28px}
+.bar .track{height:16px;background:var(--claro-a);border-radius:var(--r);overflow:hidden}
+.bar .track i{display:block;height:100%;background:var(--gris-b)}
+.bar.right .track i{background:var(--exito)}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}}
+.kpi div{background:var(--claro-c);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.kpi b{display:block;font-family:"Roboto Slab",Georgia,serif;font-size:32px;line-height:36px;color:var(--azul);letter-spacing:.23px;font-variant-numeric:tabular-nums}
+.kpi span{font-size:14px;line-height:16px;color:var(--muted);letter-spacing:1px}
+
+/* ---------------- pestañas ---------------- */
+nav.tabs{display:flex;gap:0;padding:0 24px;background:var(--blanco);border-bottom:1px solid var(--gris-c);flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
+nav.tabs button{
+  border:0;border-bottom:3px solid transparent;background:transparent;padding:14px 18px;cursor:pointer;
+  font-size:16px;line-height:24px;color:var(--gris-a);white-space:nowrap;font-family:inherit;
+  font-weight:500;letter-spacing:.5px
+}
+nav.tabs button:hover{color:var(--celeste)}
+nav.tabs button.active{color:var(--celeste);border-bottom-color:var(--celeste)}
+
+/* ---------------- varios ---------------- */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--azul-osc);color:var(--blanco);
+  padding:14px 22px;border-radius:var(--r);font-size:16px;line-height:24px;opacity:0;transition:.3s;
+  pointer-events:none;z-index:70;max-width:90vw;text-align:center;box-shadow:var(--sombra-modal);letter-spacing:.5px
+}
+.toast.show{opacity:1}
+.likert{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.likert button{
+  border:1px solid var(--gris-c);background:var(--blanco);border-radius:var(--r);padding:12px 0;cursor:pointer;
+  font-size:16px;flex:1;min-width:64px;font-family:inherit;color:var(--ink);line-height:20px;font-weight:500
+}
+.likert button:hover{border-color:var(--celeste)}
+.likert button.on{border-color:var(--celeste);border-width:2px;background:#EAF4FE;color:var(--celeste);font-weight:700}
+.likert button small{display:block;font-size:14px;line-height:16px;color:var(--muted);font-weight:400;letter-spacing:.28px}
+.cita-com{padding:12px 14px;background:var(--claro-c);border:1px solid var(--line);border-radius:var(--r);margin:8px 0;font-size:14px;line-height:20px;letter-spacing:.28px}
+.cita-com b{color:var(--azul)}
+.pill-ia{background:var(--iabg);color:var(--azul)}
+.katex{font-size:1.02em}
+.katex-display>.katex{white-space:normal}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="https://kit-digital-uc-prod.s3.amazonaws.com/assets/logo-uc-blanco.svg" alt="Pontificia Universidad Católica de Chile" onerror="this.remove();document.querySelector('header .logo').classList.add('sinlogo')">
+    <b>Ágora</b><span>MAT1219 · Álgebra Lineal <small>v4.0</small></span>
+  </div>
+  <div class="spacer"></div>
+  <div id="hright"></div>
+</header>
+
+<div class="demobar" id="demobar">
+  <b>Maqueta v4.0 · Kit Digital UC</b>
+  <span class="muted">— IA simulada (reglas, no un modelo). Controles de demostración:</span>
+  <button id="mb-est" onclick="setRol('est')">Vista estudiante</button>
+  <button id="mb-doc" onclick="setRol('doc')">Vista docente</button>
+  <button onclick="sembrarDemo()">Simular el curso completo</button>
+  <button id="mb-coach" onclick="forzarCoach()">Asistente</button>
+  <button onclick="borrarTodo()">Borrar datos</button>
+  <span class="spacer" style="flex:1"></span>
+  <button onclick="modoPiloto()" title="Oculta esta barra para usarlo con estudiantes">Modo piloto</button>
+</div>
+
+<main id="main"></main>
+<div class="toast" id="toast"></div>
+
+<!-- ================= BANCO DE PREGUNTAS CARGADO POR LA DOCENTE ================= -->
+<script type="text/plain" id="banco">
+@@ID q1
+@@TEMA Métodos de eliminación
+@@RA Distinguir y aplicar los métodos de eliminación de Gauss y Gauss-Jordan
+@@CLAVE B
+@@ENUNCIADO
+¿Cuál de las siguientes afirmaciones describe correctamente la diferencia entre el método de Gauss y el método de Gauss--Jordan?
+@@A
+El método de Gauss solo puede aplicarse a sistemas que tienen el mismo número de ecuaciones que de incógnitas.
+@@B
+El método de Gauss transforma la matriz en una matriz escalonada, mientras que Gauss--Jordan continúa hasta obtener una matriz escalonada reducida.
+@@C
+Gauss--Jordan permite intercambiar filas, pero el método de Gauss no.
+@@D
+El método de Gauss se utiliza para resolver sistemas lineales, mientras que Gauss--Jordan solamente se utiliza para calcular matrices inversas.
+@@SOL
+Ambos métodos utilizan operaciones elementales por filas. El método de Gauss busca obtener una **matriz escalonada**. En cambio, el método de Gauss--Jordan continúa el proceso hasta obtener una **matriz escalonada reducida**.
+
+Por lo tanto, la alternativa correcta es la **B**.
+
+@@ID q2
+@@TEMA Sistemas lineales · consistencia
+@@RA Interpretar la forma escalonada para determinar el número de soluciones
+@@CLAVE C
+@@ENUNCIADO
+Al aplicar eliminación gaussiana a un sistema de tres ecuaciones con tres incógnitas se obtiene la siguiente **matriz aumentada escalonada**:
+$$\left(\begin{array}{ccc|c} 1 & 2 & -1 & 3\\ 0 & 1 & 4 & 2\\ 0 & 0 & 0 & 0\end{array}\right)$$
+¿Qué se puede concluir sobre el sistema?
+@@A
+Es inconsistente porque aparece una fila de ceros.
+@@B
+Tiene solución única porque tiene tres ecuaciones y tres incógnitas.
+@@C
+Tiene infinitas soluciones y una variable libre.
+@@D
+Tiene infinitas soluciones y dos variables libres.
+@@SOL
+Hay pivotes en las columnas correspondientes a $x$ e $y$, pero no en la columna correspondiente a $z$. Por lo tanto, $z$ es una **variable libre**.
+
+La última fila representa $0=0$, por lo que no existe una contradicción y el sistema es **consistente**. Como existe una variable libre, el sistema tiene infinitas soluciones.
+
+Alternativa **C**.
+
+@@ID q3
+@@TEMA Álgebra matricial · producto
+@@RA Calcular el producto de matrices y reconocer cuándo está definido
+@@CLAVE A
+@@ENUNCIADO
+Sean
+$$A=\begin{pmatrix} 1 & -1 & 2\\ 0 & 2 & 1\end{pmatrix},\qquad B=\begin{pmatrix} 1 & 0\\ 2 & -1\\ 1 & 3\end{pmatrix}.$$
+¿Cuál es el producto $AB$?
+@@A
+$\begin{pmatrix} 1 & 7\\ 5 & 1\end{pmatrix}$
+@@B
+$\begin{pmatrix} 1 & 5\\ 7 & 1\end{pmatrix}$
+@@C
+$\begin{pmatrix} 1 & -7\\ 5 & -1\end{pmatrix}$
+@@D
+$\begin{pmatrix} 3 & 4\\ 3 & 2\end{pmatrix}$
+@@SOL
+El producto está definido porque $A$ es de tamaño $2\times3$ y $B$ es de tamaño $3\times2$. Calculamos cada entrada mediante producto fila por columna:
+$$AB=\begin{pmatrix} 1(1)+(-1)(2)+2(1) & 1(0)+(-1)(-1)+2(3)\\[2mm] 0(1)+2(2)+1(1) & 0(0)+2(-1)+1(3)\end{pmatrix}=\begin{pmatrix} 1&7\\ 5&1\end{pmatrix}.$$
+Alternativa **A**.
+
+@@ID q4
+@@TEMA Sistemas homogéneos · pivotes
+@@RA Relacionar el número de pivotes con la existencia y unicidad de soluciones
+@@CLAVE B
+@@ENUNCIADO
+Sea $A$ una matriz de tamaño $3\times4$. Al escalonar $A$ se obtiene una matriz que tiene un pivote en cada una de sus tres filas. ¿Cuál de las siguientes afirmaciones es correcta?
+@@A
+El sistema homogéneo $A\vec{x}=\vec{0}$ tiene únicamente la solución trivial porque hay un pivote en cada fila.
+@@B
+El sistema homogéneo $A\vec{x}=\vec{0}$ tiene infinitas soluciones y, para cualquier $\vec{b}\in\mathbb{R}^3$, el sistema $A\vec{x}=\vec{b}$ también tiene infinitas soluciones.
+@@C
+El sistema homogéneo tiene infinitas soluciones, pero $A\vec{x}=\vec{b}$ es inconsistente para todo $\vec{b}\neq\vec{0}$.
+@@D
+El número de soluciones del sistema homogéneo no puede determinarse sin conocer las entradas de $A$.
+@@SOL
+La matriz tiene $4$ columnas, una por cada variable, pero solamente $3$ pivotes. Por lo tanto, necesariamente existe una **variable libre** y el sistema homogéneo $A\vec{x}=\vec{0}$ tiene infinitas soluciones.
+
+Además, hay un pivote en cada una de las tres filas. Por lo tanto, al escalonar la matriz aumentada $(A\,|\,\vec{b})$ no puede aparecer una fila de la forma $(0\;0\;0\;0\,|\,c)$ con $c\neq0$. Entonces, para cualquier $\vec{b}\in\mathbb{R}^3$ el sistema es **consistente**, y como sigue existiendo una variable libre, tendrá infinitas soluciones.
+
+Alternativa **B**.
+
+@@ID q5
+@@TEMA Determinantes
+@@RA Calcular determinantes de orden 3 por expansión de cofactores
+@@CLAVE B
+@@ENUNCIADO
+Considere la matriz
+$$A=\begin{pmatrix} 2 & 1 & 0\\ -1 & 3 & 2\\ 0 & 4 & 1\end{pmatrix}.$$
+¿Cuál es el valor de $\det(A)$?
+@@A
+$-11$
+@@B
+$-9$
+@@C
+$9$
+@@D
+$11$
+@@SOL
+Desarrollamos el determinante por la primera fila:
+$$\det(A)=2\begin{vmatrix} 3&2\\ 4&1\end{vmatrix}-\begin{vmatrix} -1&2\\ 0&1\end{vmatrix}=2(3\cdot1-2\cdot4)-\big((-1)\cdot1-2\cdot0\big).$$
+Por lo tanto, $\det(A)=2(3-8)-(-1)=-10+1=-9$.
+
+Alternativa **B**.
+
+@@ID q6
+@@TEMA Matriz inversa
+@@RA Conectar la reducción a la identidad con la invertibilidad
+@@CLAVE C
+@@ENUNCIADO
+Sea $A$ una matriz cuadrada de orden $3$. Al aplicar Gauss--Jordan a $A$ se obtiene $A\;\longrightarrow\;I_3$. ¿Cuál de las siguientes afirmaciones es necesariamente verdadera?
+@@A
+Solamente el sistema homogéneo $A\vec{x}=\vec{0}$ tiene solución única; para otros vectores $\vec{b}$ el sistema puede ser inconsistente.
+@@B
+$A$ tiene inversa, pero eso no garantiza que $A\vec{x}=\vec{b}$ tenga solución para cualquier $\vec{b}$.
+@@C
+Para todo $\vec{b}\in\mathbb{R}^3$, el sistema $A\vec{x}=\vec{b}$ tiene una única solución, dada por $\vec{x}=A^{-1}\vec{b}$.
+@@D
+Como $A$ puede transformarse en $I_3$ mediante operaciones elementales por filas, necesariamente $A=I_3$.
+@@SOL
+Si mediante operaciones elementales por filas podemos transformar $A$ en $I_3$, entonces $A$ es **invertible**. Por lo tanto, para cualquier $\vec{b}\in\mathbb{R}^3$ podemos multiplicar $A\vec{x}=\vec{b}$ por $A^{-1}$:
+$$A^{-1}A\vec{x}=A^{-1}\vec{b}\quad\Longrightarrow\quad \vec{x}=A^{-1}\vec{b}.$$
+Así, para cada $\vec{b}$ existe exactamente una solución.
+
+Alternativa **C**.
+
+@@ID q7
+@@TEMA Dependencia lineal e invertibilidad
+@@RA Reconocer dependencia entre filas y sus consecuencias sobre la inversa
+@@CLAVE C
+@@ENUNCIADO
+Considere la matriz
+$$A=\begin{pmatrix} 1 & 2 & 1\\ 0 & 1 & 3\\ 2 & 5 & 5\end{pmatrix}.$$
+Observe que $F_3=2F_1+F_2$. ¿Cuál de las siguientes afirmaciones es correcta?
+@@A
+Como $A$ es cuadrada, necesariamente tiene inversa.
+@@B
+Las filas de $A$ son linealmente dependientes, pero $A$ admite inversa porque el sistema homogéneo $A\vec{x}=\vec{0}$ siempre tiene al menos una solución.
+@@C
+Las filas de $A$ son linealmente dependientes y, al aplicar Gauss--Jordan a $(A\,|\,I)$, no es posible transformar el bloque izquierdo en la matriz identidad.
+@@D
+Aunque una fila de $A$ sea combinación lineal de las otras, las operaciones elementales por filas permiten convertir $A$ en la matriz identidad.
+@@SOL
+La relación $F_3=2F_1+F_2$ muestra que la tercera fila depende de las dos primeras. Mediante la operación $F_3\longrightarrow F_3-2F_1-F_2$ se obtiene una fila completamente nula.
+
+Por lo tanto, al continuar el proceso de Gauss--Jordan no puede aparecer un pivote en cada fila y no es posible transformar $A$ en $I$. En consecuencia, tampoco es posible transformar $(A\,|\,I)$ en $(I\,|\,A^{-1})$: la matriz $A$ **no es invertible**.
+
+La alternativa B contiene un error conceptual importante: todo sistema homogéneo tiene la solución trivial, pero eso no significa que su matriz de coeficientes sea invertible.
+
+Alternativa **C**.
+
+@@ID q8
+@@TEMA Sistemas con parámetro
+@@RA Discutir el número de soluciones de un sistema según un parámetro
+@@CLAVE C
+@@ENUNCIADO
+Considere, dependiendo del parámetro $\lambda\in\mathbb{R}$, el sistema
+$$\begin{pmatrix} 1 & 1 & 0\\ 2 & \lambda & 1\\ 0 & 1 & 1\end{pmatrix}\begin{pmatrix} x\\ y\\ z\end{pmatrix}=\begin{pmatrix} 1\\ 0\\ 1\end{pmatrix}.$$
+¿Cuál de las siguientes afirmaciones describe correctamente el número de soluciones del sistema?
+@@A
+Para todo $\lambda\in\mathbb{R}$, el sistema tiene solución única.
+@@B
+Si $\lambda\neq3$, el sistema tiene solución única; si $\lambda=3$, tiene infinitas soluciones.
+@@C
+Si $\lambda\neq3$, el sistema tiene solución única; si $\lambda=3$, el sistema no tiene solución.
+@@D
+Si $\lambda=3$, el sistema tiene solución única; si $\lambda\neq3$, el sistema no tiene solución.
+@@SOL
+Escribimos la matriz aumentada y aplicamos $F_2\to F_2-2F_1$, luego intercambiamos $F_2$ y $F_3$, y finalmente $F_3\to F_3-(\lambda-2)F_2$:
+$$\left(\begin{array}{ccc|c} 1&1&0&1\\ 0&1&1&1\\ 0&0&3-\lambda&-\lambda\end{array}\right).$$
+Si $\lambda\neq3$, la tercera fila contiene un pivote, hay un pivote para cada una de las tres variables y el sistema tiene **solución única**.
+
+En cambio, si $\lambda=3$, la última fila se convierte en $(0\;0\;0\,|\,-3)$, que representa la ecuación imposible $0=-3$. Por lo tanto, para $\lambda=3$ el sistema es **inconsistente**.
+
+Alternativa **C**.
+</script>
+
+<script>
+/* =========================================================================
+   ÁGORA · maqueta para prueba de usabilidad
+   Sin IA. Sin creación de ítems por estudiantes. Sin notas. Sin ranking.
+   Persistencia en localStorage. Telemetría por paso.
+   ========================================================================= */
+
+const KEY = "agora_pilot_v4";
+
+/* Lista del curso. El código es lo único que viaja con las respuestas:
+   el nombre solo existe aquí, para que cada estudiante encuentre el suyo. */
+const CURSO = [
+  "Gloria Altamirano Rojas",
+  "Javiera Belen Apablaza Ramírez",
+  "Carolina Ayleen Cabrera Villablanca",
+  "Felipe Octavio Cofré Aravena",
+  "Juan Ignacio Fernández Rojas",
+  "Aldo Alex Griño Guerra",
+  "Domingo Vicente Lobos Jaramillo",
+  "Juan Pablo Machuca Miranda",
+  "Tirso Meneses Rojas",
+  "Almendra Belén Mesías Otárola",
+  "Daniel Alonso Muena Miranda",
+  "Josefa Núñez Rebolledo",
+  "Ignacio Antonio Pérez Cabello",
+  "Daniela Alejandra Tello Morales",
+  "Vilma Isabel Valpuesta Araya",
+  "Francisca Monserrat Vázquez De Orue"
+];
+const codigoDe = i => "EST-" + String(i+1).padStart(3,"0");
+const nombreDe = c => { const i=CURSO.findIndex((_,k)=>codigoDe(k)===c); return i<0?null:CURSO[i]; };
+const grupoDe  = c => { const n=parseInt(String(c).slice(4),10); return (n%2===1)?"coach":"control"; };
+const L   = ["A","B","C","D"];
+
+/* --------------------- rúbrica por defecto (editable) --------------------- */
+const CRIT_DEF = [
+  {id:"claridad",   nombre:"Claridad del enunciado",
+   ayuda:"¿Entendiste qué te estaban preguntando?", tipo:"escala",
+   niveles:["Confuso o ambiguo","Se entiende con esfuerzo","Claro a la primera lectura"]},
+  {id:"dificultad", nombre:"Dificultad",
+   ayuda:"Esto no es una nota de calidad: es una categoría. Ningún nivel es mejor que otro.", tipo:"categoria",
+   niveles:["Muy fácil","Adecuada","Muy difícil"]},
+  {id:"distractores",nombre:"Calidad de las alternativas incorrectas",
+   ayuda:"¿Alguna alternativa incorrecta te hizo dudar de verdad?", tipo:"escala",
+   niveles:["Obviamente descartables","Alguna resultaba tentadora","Todas parecían posibles"]},
+  {id:"solucion",   nombre:"Utilidad de la solución comentada",
+   ayuda:"¿La explicación que acabas de leer te sirvió?", tipo:"escala",
+   niveles:["No aclaró mis dudas","Aclaró parcialmente","Aclaró completamente"]}
+];
+
+const CONSIGNA_DEF = "Escribe un comentario para quien diseñó esta pregunta. ¿Qué te hizo dudar? ¿Alguna alternativa incorrecta te pareció especialmente tentadora, y por qué? ¿Hay algo del enunciado que mejorarías?";
+
+const INSIGNIAS = [
+  {id:"primera", ic:"🌱", n:"Primer ciclo",       d:"Completaste tu primera pregunta"},
+  {id:"mitad",   ic:"⛰️", n:"A mitad de camino",  d:"Llegaste a la mitad del conjunto"},
+  {id:"final",   ic:"🏁", n:"Recorrido completo", d:"Completaste todas las preguntas"},
+  {id:"voz",     ic:"✍️", n:"Comentarista",       d:"Tres comentarios extensos y sustantivos"}
+];
+
+const ENCUESTA = [
+  {id:"e1", t:"¿Qué tan fácil te resultó usar Ágora?", tipo:"likert", ext:["Muy difícil","Muy fácil"]},
+  {id:"e2", t:"¿Los criterios para valorar las preguntas fueron claros?", tipo:"likert", ext:["Nada claros","Muy claros"]},
+  {id:"e3", t:"¿Las estrellas y la barra de progreso te motivaron a completar?", tipo:"likert", ext:["Nada","Mucho"]},
+  {id:"e4", t:"¿Hubo algún momento en que no supiste qué hacer? Cuéntanos cuál.", tipo:"texto"},
+  {id:"e5", t:"Si pudieras cambiar una cosa de la plataforma, ¿cuál sería?", tipo:"texto"}
+];
+
+/* --------------------------- utilidades --------------------------- */
+const $ = s => document.querySelector(s);
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),2400)}
+function ahora(){return Date.now()}
+function hhmm(ts){const d=new Date(ts);return d.toLocaleString("es-CL",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})}
+function seg(a,b){return (a&&b)?Math.round((b-a)/1000):""}
+function pct(a,b){return b?Math.round(100*a/b):0}
+
+/* Texto con negritas, saltos de párrafo y LaTeX protegido */
+function md(t){
+  const mem=[];
+  let s=String(t==null?"":t);
+  s=s.replace(/\$\$[\s\S]*?\$\$|\$[^$\n]*?\$/g, m=>{mem.push(m);return "\u0001M"+(mem.length-1)+"M\u0001"});
+  s=esc(s).replace(/--/g,"–").replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>");
+  s=s.split(/\n{2,}/).map(p=>"<p>"+p.replace(/\n/g,"<br>")+"</p>").join("");
+  return s.replace(/\u0001M(\d+)M\u0001/g,(m,i)=>mem[+i]);
+}
+function tex(el){
+  if(!window.renderMathInElement) return;
+  try{ renderMathInElement(el||document.body,{delimiters:[
+    {left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}
+  ],throwOnError:false,ignoredTags:["script","noscript","style","textarea","option"]}); }catch(e){}
+}
+
+/* --------------------- parser del banco de preguntas --------------------- */
+function parseBanco(txt){
+  const out=[]; let cur=null, campo=null;
+  txt.split(/\r?\n/).forEach(ln=>{
+    const m=ln.match(/^@@([A-ZÁ]+)\s*(.*)$/);
+    if(m){
+      const k=m[1], v=m[2].trim();
+      if(k==="ID"){ if(cur) out.push(cur); cur={id:v,tema:"",ra:"",clave:"A",stem:"",alts:["","","",""],sol:""}; campo=null; return; }
+      if(!cur) return;
+      if(k==="TEMA"){cur.tema=v;campo=null;return}
+      if(k==="RA"){cur.ra=v;campo=null;return}
+      if(k==="CLAVE"){cur.clave=v.toUpperCase();campo=null;return}
+      if(k==="ENUNCIADO"){campo="stem";return}
+      if(k==="SOL"){campo="sol";return}
+      if(["A","B","C","D"].indexOf(k)>=0){campo="alt"+k;return}
+      return;
+    }
+    if(!cur||!campo) return;
+    if(campo==="stem") cur.stem += (cur.stem?"\n":"")+ln;
+    else if(campo==="sol") cur.sol += (cur.sol?"\n":"")+ln;
+    else { const i=L.indexOf(campo.slice(3)); cur.alts[i]+=(cur.alts[i]?"\n":"")+ln; }
+  });
+  if(cur) out.push(cur);
+  return out.map(q=>({...q, stem:q.stem.trim(), sol:q.sol.trim(), alts:q.alts.map(a=>a.trim())}));
+}
+
+/* ----------------------------- estado ----------------------------- */
+let DB=null, rol="est", cod=null, vista="login", tab="diagnostico", verDoc=null, _pantalla="";
+
+function dbNueva(){
+  return {
+    config:{ minChars:120, consigna:CONSIGNA_DEF, coach:"on", criterios:JSON.parse(JSON.stringify(CRIT_DEF)) },
+    preguntas: parseBanco($("#banco").textContent),
+    sesiones:{}, eventos:[]
+  };
+}
+function cargar(){
+  try{ const raw=localStorage.getItem(KEY); DB = raw?JSON.parse(raw):dbNueva(); }
+  catch(e){ DB=dbNueva(); }
+  if(!DB.preguntas||!DB.preguntas.length) DB.preguntas=parseBanco($("#banco").textContent);
+  if(!DB.config) DB.config={minChars:120,consigna:CONSIGNA_DEF,coach:"on",criterios:JSON.parse(JSON.stringify(CRIT_DEF))};
+  if(!DB.config.coach) DB.config.coach="on";
+  if(!DB.eventos) DB.eventos=[];
+  if(!DB.sesiones) DB.sesiones={};
+  // sesiones creadas antes de que existiera el reparto A/B: se les asigna grupo ahora
+  Object.values(DB.sesiones).forEach(s=>{
+    if(!s.grupo) s.grupo = DB.config.coach==="on" ? "coach"
+                        : (DB.config.coach==="off" ? "control" : grupoDe(s.codigo));
+    if(!s.ciclos) s.ciclos={};
+    Object.values(s.ciclos).forEach(c=>{ if(!c.coach) c.coach={visto:0,dx:[],charsAviso:null,edito:false,ocultado:false}; });
+  });
+}
+function guardar(){ try{ localStorage.setItem(KEY,JSON.stringify(DB)); }catch(e){ toast("No se pudo guardar en este navegador"); } }
+function ev(tipo,q,paso,extra){
+  DB.eventos.push({ts:ahora(),cod:cod||"",tipo:tipo,q:q||"",paso:paso||"",extra:extra==null?"":extra});
+  guardar();
+}
+
+const NQ   = () => DB.preguntas.length;
+const S    = () => DB.sesiones[cod];
+const MIN  = () => DB.config.minChars;
+const CRIT = () => DB.config.criterios;
+
+function cicloNuevo(){ return {ini:ahora(), paso:"responder", resp:null, tResp:null, correcto:null, rub:{}, tRub:null, com:"", chars:0, tCom:null, completo:false,
+  coach:{visto:0, dx:[], charsAviso:null, edito:false, ocultado:false}}; }
+function C(qid){ const s=S(); if(!s.ciclos[qid]) { s.ciclos[qid]=cicloNuevo(); } s.ciclos[qid]._qid=qid; return s.ciclos[qid]; }
+function completos(s){ return Object.values(s.ciclos||{}).filter(c=>c.completo).length }
+function sustantivos(s){ return Object.values(s.ciclos||{}).filter(c=>c.completo&&c.chars>=2*MIN()).length }
+
+function revisarInsignias(){
+  const s=S(), n=completos(s), ganadas=[];
+  const cond={primera:n>=1, mitad:n>=Math.ceil(NQ()/2), final:n>=NQ(), voz:sustantivos(s)>=3};
+  INSIGNIAS.forEach(b=>{ if(cond[b.id] && s.insignias.indexOf(b.id)<0){ s.insignias.push(b.id); ganadas.push(b); } });
+  return ganadas;
+}
+function animarEstrella(txt){
+  const d=document.createElement("div"); d.className="starpop";
+  d.innerHTML='<div>'+(txt||"⭐")+'</div>';
+  document.body.appendChild(d);
+  setTimeout(()=>d.remove(),900);
+}
+
+/* =========================================================================
+   IA SIMULADA — motor de reglas compartido
+   No hay ningún modelo detrás: son heurísticas sobre el texto y sobre los
+   datos ya recogidos. Se comporta como IA para el estudiante (Wizard of Oz)
+   y como analista para la docente. Todo lo que produce queda registrado.
+   ========================================================================= */
+
+/* --- 1. diagnóstico de un comentario en curso --- */
+const RX_ALT   = /\b(?:alternativa\s+|opci[oó]n\s+|la\s+|el\s+|distractor\s+)([ABCD])\b|\b([ABCD])\)/g;
+const RX_CAUSA = /porque|ya que|debido a|puesto que|dado que|por eso|por lo que|me hizo|me llev[oó]|asum[ií]|cre[ií] que|pens[eé] que/i;
+const RX_ENUN  = /enunciado|redacci[oó]n|se entiende|ambigu|est[aá] claro|frase|palabra|se lee|releer|le[ií] dos veces/i;
+const RX_SOL   = /soluci[oó]n|explicaci[oó]n|aclar|desarrollo|paso a paso|me qued[oó] claro/i;
+const RX_CONCR = /matriz|pivote|fila|columna|determinante|signo|variable libre|inversa|escalonad|producto|par[aá]metro|lambda|homog[eé]neo|consistente/i;
+const RX_VAGO  = /^(?:.{0,200})$/;
+
+function diagCom(txt){
+  const t=(txt||"").trim(), n=t.length;
+  const alts=[]; let m; RX_ALT.lastIndex=0;
+  while((m=RX_ALT.exec(t))) alts.push(m[1]||m[2]);
+  const d={
+    n:n,
+    alts:[...new Set(alts.map(a=>a.toUpperCase()))],
+    causa:RX_CAUSA.test(t),
+    enunciado:RX_ENUN.test(t),
+    solucion:RX_SOL.test(t),
+    concreto:RX_CONCR.test(t),
+    frases:t.split(/[.!?]+/).filter(s=>s.trim().length>10).length
+  };
+  // el orden importa: se devuelve una sola carencia, la más útil de señalar
+  if(n<40)                          d.dx="temprano";
+  else if(!d.alts.length&&!d.concreto) d.dx="sin_anclaje";
+  else if(d.alts.length&&!d.causa)  d.dx="alt_sin_causa";
+  else if(!d.alts.length&&d.concreto&&!d.causa) d.dx="sin_causa";
+  else if(!d.enunciado&&!d.solucion) d.dx="sin_mejora";
+  else                               d.dx="ok";
+  return d;
+}
+const COACH_MSG={
+  temprano:     d=>"Cuéntame qué te pasó con esta pregunta. A medida que escribas te voy diciendo qué le falta para que le sirva a quien la diseñó.",
+  sin_anclaje:  d=>"Por ahora tu comentario cuenta cómo te fue, pero no dice <b>qué</b> de la pregunta lo provocó. Nombrar una alternativa concreta — la B, la C — es lo que le sirve a quien la diseñó.",
+  alt_sin_causa:d=>"Mencionas la <b>"+d.alts[0]+"</b>. ¿Qué te hizo pensar que podía ser la correcta? Ese es justamente el dato que no se ve en las estadísticas.",
+  sin_causa:    d=>"Describes lo que pasó, pero no por qué. Una frase que empiece con “porque…” convierte tu comentario en algo que se puede corregir.",
+  sin_mejora:   d=>"Ya explicaste tu razonamiento. ¿Hay algo del <b>enunciado</b> o de la <b>solución comentada</b> que cambiarías? Con eso quien diseñó la pregunta sabe dónde meter mano.",
+  ok:           d=>"Tu comentario nombra algo concreto y explica por qué. Así es exactamente como sirve — puedes enviarlo."
+};
+const COACH_LABEL={sin_anclaje:"sin anclaje concreto",alt_sin_causa:"alternativa sin explicación",
+  sin_causa:"sin causa explícita",sin_mejora:"sin propuesta de mejora",ok:"comentario completo",temprano:"muy breve aún"};
+
+/* --- 2. agrupación temática de comentarios --- */
+const TEMAS=[
+  {id:"movil",   n:"problemas para ver la pregunta en el celular", rx:/celular|pantalla|se corta|se sale|desplaz|m[oó]vil|tel[eé]fono|zoom/i,
+   accion:"Revisar el desplazamiento horizontal de las matrices antes del próximo uso."},
+  {id:"descart", n:"alternativas incorrectas fáciles de descartar", rx:/descart|obvi|sin calcular|se ve al tiro|con mirar|salta a la vista|nadie (?:la )?elegir/i,
+   accion:"Reemplazar el distractor que nadie considera por uno que represente un error real."},
+  {id:"tentador",n:"alternativas incorrectas que sí funcionaron", rx:/tentador|casi la eleg|dud[eé]|me convenc|plausible|suenan? (?:razonable|posible)|estuve a punto/i,
+   accion:"Conservar esos distractores: están haciendo su trabajo."},
+  {id:"largo",   n:"enunciado largo o que hubo que releer", rx:/largo|releer|dos veces|ambigu|confus|separar|extens|enredad/i,
+   accion:"Partir el enunciado en dos frases y comprobar si baja el tiempo de lectura."},
+  {id:"solmas",  n:"piden más en la solución comentada", rx:/podr[ií]a (?:mostrar|incluir|agregar)|sugiero|faltó|deber[ií]a (?:mostrar|decir|incluir)|me habr[ií]a servido|agregar/i,
+   accion:"Ampliar la solución con el paso que los estudiantes echan de menos."},
+  {id:"solutil", n:"la solución comentada les resolvió la duda", rx:/aclar[oó]|clar[ií]sim|entend[ií]|muy [uú]til|impecable|justo lo que|qued[oó] clar/i,
+   accion:"Ninguna: la explicación está cumpliendo su función."},
+  {id:"facil",   n:"la encontraron demasiado directa", rx:/r[aá]pido|f[aá]cil|directa|muy practicad|sin pensar|autom[aá]tic/i,
+   accion:"Subir la exigencia cambiando signos o pidiendo justificar el procedimiento."},
+  {id:"error",   n:"les reveló un error propio", rx:/me equivoqu[eé]|comet[ií]a|asum[ií]|no revis[eé]|me confund[ií]|pens[eé] que|error que/i,
+   accion:"Llevar esta pregunta a clase: el error que expone está instalado en el curso."}
+];
+function temasDe(coms){
+  const res=TEMAS.map(t=>({...t,hits:coms.filter(c=>t.rx.test(c.txt||c))}))
+                 .filter(t=>t.hits.length>0)
+                 .sort((a,b)=>b.hits.length-a.hits.length);
+  return res;
+}
+function sintesisHTML(coms,total){
+  if(!coms.length) return '<div class="muted small">Sin comentarios que resumir todavía.</div>';
+  const ts=temasDe(coms).slice(0,4);
+  if(!ts.length) return '<div class="muted small">Los comentarios no caen en ningún patrón reconocible. Conviene leerlos uno a uno.</div>';
+  const cita=c=>{const x=c.hits.slice().sort((a,b)=>(b.txt||b).length-(a.txt||a).length)[0]; return (x.txt||x);};
+  return `<div class="aibox">
+    <div class="t">Síntesis automática · ${coms.length} de ${total} estudiantes comentaron</div>
+    <ul>${ts.map(t=>`<li><b>${t.hits.length} de ${coms.length}</b> mencionan ${esc(t.n)}.
+      <details><summary>ver ejemplo y acción sugerida</summary>
+        <div class="cita">“${esc(cita(t).slice(0,240))}${cita(t).length>240?"…":""}”</div>
+        <div class="acc">→ ${esc(t.accion)}</div></details></li>`).join("")}</ul>
+    <div class="dis">Agrupación automática. Sirve para priorizar la lectura, no para reemplazarla.</div>
+  </div>`;
+}
+
+/* --- 3. triangulación entre conducta y valoración --- */
+function moda(arr){ // arr = [n1,n2,n3]
+  const mx=Math.max(...arr); if(mx===0) return null;
+  return arr.indexOf(mx)+1;
+}
+function medianaN(a){ if(!a.length) return null; const s=[...a].sort((x,y)=>x-y); return s[Math.floor(s.length/2)]; }
+
+function hallazgos(){
+  const out=[], N=sesiones().length;
+  DB.preguntas.forEach((q,i)=>{
+    const st=statsQ(q); if(!st.tot) return;
+    const acierto=pct(st.ok,st.tot);
+    const dif=st.rub.dificultad||[0,0,0], cla=st.rub.claridad||[0,0,0];
+    const dis=st.rub.distractores||[0,0,0], sol=st.rub.solucion||[0,0,0];
+    const pDis=+prom(dis)||0, pCla=+prom(cla)||0, pSol=+prom(sol)||0;
+    const mDif=moda(dif);
+    const incorrectas=L.filter(l=>l!==q.clave);
+    const elegidas=incorrectas.map(l=>({l,n:st.dist[l]||0}));
+    const muertos=elegidas.filter(e=>e.n===0);
+    const maxDis=Math.max(...elegidas.map(e=>e.n));
+    const P="Pregunta "+(i+1);
+
+    if(acierto>=70 && mDif===3)
+      out.push({s:"media",q:i+1,t:"Dificultad percibida que no coincide con el desempeño",
+        d:`${P}: acertó el <b>${acierto}%</b>, pero la mayoría marcó la dificultad como “muy difícil”. La sensación de dificultad viene del cálculo o de la extensión, no del concepto.`,
+        a:"Revisar si lo que cansa es la aritmética y no la idea que se quiere evaluar."});
+    if(acierto<=40 && mDif===1)
+      out.push({s:"alta",q:i+1,t:"La encontraron fácil y fallaron igual",
+        d:`${P}: solo acertó el <b>${acierto}%</b>, pero la valoraron como “muy fácil”. Ese desajuste suele indicar una trampa involuntaria o una lectura equivocada del enunciado.`,
+        a:"Leer los comentarios de quienes fallaron antes de reutilizar el ítem."});
+    if(pDis>=2.4 && maxDis<=Math.max(1,Math.round(st.tot*0.1)))
+      out.push({s:"alta",q:i+1,t:"Valoración de cortesía en los distractores",
+        d:`${P}: valoraron los distractores en <b>${pDis.toFixed(2)}</b> de 3 (“parecían posibles”), pero ninguna alternativa incorrecta superó ${maxDis} elección(es). Lo que dicen y lo que hicieron no coincide.`,
+        a:"Tomar con reserva este criterio de la rúbrica: con el grupo pequeño puede estar operando la cortesía."});
+    if(muertos.length && st.tot>=5)
+      out.push({s:"media",q:i+1,t:"Distractor sin ninguna elección",
+        d:`${P}: nadie eligió ${muertos.map(e=>"<b>"+e.l+"</b>").join(" ni ")} en ${st.tot} respuestas. Un distractor que no atrae a nadie no aporta información.`,
+        a:"Reemplazarlo por un error que los estudiantes cometan de verdad."});
+    const top=elegidas.slice().sort((a,b)=>b.n-a.n)[0];
+    if(top && top.n>(st.dist[q.clave]||0) && st.tot>=5)
+      out.push({s:"alta",q:i+1,t:"Un distractor gana a la clave",
+        d:`${P}: la alternativa <b>${top.l}</b> recibió ${top.n} elecciones y la clave <b>${q.clave}</b> solo ${st.dist[q.clave]||0}. O hay un concepto mal instalado en el curso, o hay un problema con la clave.`,
+        a:"Verificar la clave y, si está bien, llevar el ítem a clase como caso de discusión."});
+    if(pCla && pCla<2.0)
+      out.push({s:"alta",q:i+1,t:"Claridad por debajo del umbral",
+        d:`${P}: la claridad promedia <b>${pCla.toFixed(2)}</b> de 3. El costo se paga en tiempo de lectura y en comentarios sobre la redacción, no sobre el contenido.`,
+        a:"Reescribir el enunciado antes de volver a usarlo."});
+    if(pSol && pSol<2.0 && acierto<50)
+      out.push({s:"alta",q:i+1,t:"Prioridad de reescritura: se falla y la solución no rescata",
+        d:`${P}: acierto de <b>${acierto}%</b> y utilidad de la solución en <b>${pSol.toFixed(2)}</b> de 3. Es el peor cruce posible: el ítem detecta un vacío y después no lo cierra.`,
+        a:"Ampliar la solución comentada con el paso que se está saltando."});
+  });
+
+  /* fatiga a lo largo del recorrido */
+  const porPos=DB.preguntas.map(q=>{
+    const cs=sesiones().map(s=>(s.ciclos||{})[q.id]).filter(c=>c&&c.completo);
+    return {n:cs.length, chars:cs.length?Math.round(cs.reduce((a,c)=>a+c.chars,0)/cs.length):0};
+  });
+  const conDatos=porPos.filter(p=>p.n>=3);
+  if(conDatos.length>=4){
+    const pri=conDatos.slice(0,2), ult=conDatos.slice(-2);
+    const a=Math.round(pri.reduce((x,p)=>x+p.chars,0)/pri.length);
+    const b=Math.round(ult.reduce((x,p)=>x+p.chars,0)/ult.length);
+    if(a>0 && b<a*0.85)
+      out.push({s:"media",q:"—",t:"Los comentarios se acortan hacia el final",
+        d:`Las dos primeras preguntas promedian <b>${a}</b> caracteres y las dos últimas <b>${b}</b>: una caída del <b>${Math.round(100-100*b/a)}%</b>. Es fatiga del recorrido, no una propiedad de esas preguntas.`,
+        a:"Rotar el orden de las preguntas entre estudiantes, o acortar el conjunto."});
+  }
+  /* comentarios pegados al mínimo */
+  const todos=[]; sesiones().forEach(s=>Object.values(s.ciclos||{}).forEach(c=>{ if(c.completo) todos.push(c.chars); }));
+  if(todos.length>=8){
+    const cerca=todos.filter(c=>c<=MIN()*1.15).length;
+    if(cerca/todos.length>=0.4)
+      out.push({s:"alta",q:"—",t:"El mínimo de caracteres se está convirtiendo en el objetivo",
+        d:`<b>${cerca} de ${todos.length}</b> comentarios (${pct(cerca,todos.length)}%) terminan a menos de un 15% del mínimo de ${MIN()} caracteres. Cuando el umbral se vuelve la meta, deja de medir calidad.`,
+        a:"Sustituir parte del umbral por la sugerencia de escritura, o bajarlo y exigir que se nombre una alternativa."});
+  }
+  const orden={alta:0,media:1,info:2};
+  return out.sort((x,y)=>orden[x.s]-orden[y.s]);
+}
+
+/* =========================================================================
+   CHATBOT SIMULADO
+   Las respuestas se construyen con los datos reales de la sesión: qué
+   alternativa eligió, si acertó, cómo valoró la pregunta, cuánto lleva
+   escrito. Por eso suenan razonables sin que haya ningún modelo detrás.
+   ========================================================================= */
+
+function rot(arr,n){ return arr[(n||0)%arr.length]; }
+const LETRA={A:"A",B:"B",C:"C",D:"D"};
+
+/* ---- lo que el asistente sabe del estudiante en este momento ---- */
+function ctxEst(qid){
+  const c=C(qid), q=DB.preguntas.find(x=>x.id===qid);
+  const d=diagCom(c.com||"");
+  return {c,q,d, min:MIN(), faltan:Math.max(0,MIN()-(c.chars||0)),
+          rub:c.rub||{}, turno:(c.chat||[]).filter(m=>m.de==="yo").length};
+}
+function saludoEst(qid){
+  const {c,q}=ctxEst(qid);
+  const otras=L.filter(l=>l!==q.clave&&l!==c.resp);
+  if(c.correcto)
+    return `Acertaste con la <b>${q.clave}</b>. Lo que más nos sirve no es eso, sino lo que dudaste antes de decidir: ¿alguna de las otras te hizo pensar?`;
+  return `Elegiste la <b>${c.resp}</b> y la clave era la <b>${q.clave}</b>. Eso es justamente lo interesante: ¿qué te hizo pensar que la ${c.resp} era la correcta?`;
+}
+
+/* ---- motor de respuesta del asistente del estudiante ---- */
+function responderEst(qid,txt){
+  const x=ctxEst(qid), t=(txt||"").trim(), n=x.turno;
+  const bajo=t.toLowerCase();
+  const alts=[]; RX_ALT.lastIndex=0; let m;
+  while((m=RX_ALT.exec(t))) alts.push((m[1]||m[2]).toUpperCase());
+  const suyas=[...new Set(alts)];
+
+  // 1. cierre de la conversación: el mensaje entero tiene que ser esa palabra,
+  //    o "no sé qué escribir" se confundiría con un "no"
+  if(/^(listo|ya|ya est[aá]|termin[eé]|termine|gracias|ok|okay|vale|dale|perfecto|genial|s[ií]|no)[\s.!¡]*$/i.test(bajo))
+    return {t: x.faltan>0
+      ? `Bien. Te faltan <b>${x.faltan}</b> caracteres para poder enviar. Si quieres, escribe ahí mismo lo que me acabas de decir.`
+      : `Perfecto. Tu comentario ya se puede enviar cuando quieras.`};
+
+  // 2. límite honesto: no resuelve el ejercicio
+  if(/c[oó]mo se (resuelve|hace|calcula)|por qu[eé] (es|da|sale)|expl[ií]came (el|la|c[oó]mo|por)|no entiendo (la materia|el ejercicio|c[oó]mo)|resu[eé]lve/i.test(bajo))
+    return {t:`Eso no te lo puedo resolver yo, y tampoco es mi papel: la explicación está en la solución comentada, más arriba. Lo mío es que tu comentario le sirva a quien diseñó la pregunta. ¿Qué parte de esa solución te dejó con dudas?`};
+
+  // 2b. no entiende la tarea o el vocabulario
+  if(/qu[eé] es un distractor|qu[eé] son los distractores|qu[eé] significa|no entiendo (el criterio|la r[uú]brica|qu[eé] me piden|para qu[eé])|para qu[eé] sirve esto|qu[eé] hago aqu[ií]/i.test(bajo))
+    return {t:`Los <b>distractores</b> son las tres alternativas incorrectas. Un buen distractor representa un error que alguien cometería de verdad; uno malo se descarta de una mirada. Lo que te pedimos es contarle a quien diseñó la pregunta cómo funcionó contigo: qué te hizo dudar y qué cambiarías. No es una nota, y no hay respuesta correcta.`};
+
+  // 3. dudas sobre el largo
+  if(/cu[aá]nto|cu[aá]ntos|caracteres|m[ií]nimo|largo|corto|suficiente|falta/i.test(bajo))
+    return {t: x.faltan>0
+      ? `Necesitas <b>${x.min}</b> caracteres y llevas <b>${x.c.chars||0}</b>: faltan ${x.faltan}. Pero no rellenes por rellenar; con una frase que diga qué alternativa te tentó y por qué, llegas de sobra.`
+      : `Ya pasaste el mínimo de ${x.min} caracteres, llevas ${x.c.chars}. Lo que queda no es escribir más, sino que se entienda sin haber visto la pregunta.`};
+
+  // 4. no sabe qué escribir: se le ofrece un ángulo sacado de su propia valoración
+  if(/no s[eé]|ni idea|no se me ocurre|qu[eé] escribo|qu[eé] pongo|ayuda|ay[uú]dame|no sabr[ií]a|c[oó]mo empiez|c[oó]mo empez|por d[oó]nde|c[oó]mo parto|partir|qu[eé] se supone|qu[eé] digo|qu[eé] tengo que (decir|escribir|poner)|en blanco|nada que decir/i.test(bajo)){
+    const op=[];
+    if(x.rub.claridad===1) op.push(`marcaste que el enunciado era confuso, así que cuéntame qué parte tuviste que releer`);
+    if(x.rub.claridad===2) op.push(`dijiste que se entendía con esfuerzo: ¿dónde estuvo el esfuerzo?`);
+    if(x.rub.distractores>=2) op.push(`dijiste que alguna alternativa incorrecta era tentadora, dime cuál y qué la hacía creíble`);
+    if(x.rub.distractores===1) op.push(`dijiste que las incorrectas se descartaban solas, así que cuenta cuál sobraba`);
+    if(x.rub.solucion<=2) op.push(`la solución no te aclaró del todo: ¿qué paso faltaba?`);
+    if(!x.c.correcto) op.push(`te equivocaste con la ${x.c.resp}: contar por qué te pareció correcta es lo más útil que puedes dejar`);
+    if(!op.length) op.push(`dime qué fue lo último que dudaste antes de marcar tu respuesta`);
+    const dudo = x.c.correcto ? L.filter(l=>l!==x.q.clave)[0] : x.c.resp;
+    const arranque = `Dudé entre la ${dudo} y la ${x.q.clave} porque `;
+    return {t:`Tienes más material del que crees: ${rot(op,n)}.<br><br>Y si lo que te cuesta es la primera frase, empieza por la más simple: qué alternativa te hizo dudar. Te dejo el comienzo y tú lo terminas.`,
+            pasar:arranque, etiqueta:"Empezar con esta frase"};
+  }
+
+  // 5. nombró una alternativa
+  if(suyas.length){
+    const a=suyas[0];
+    if(RX_CAUSA.test(t))
+      return {t:`Eso es exactamente lo que le sirve a quien diseñó la pregunta: no que la ${a} estuviera mal, sino por qué parecía bien.`,
+              pasar:t};
+    return {t:`Anotado, la <b>${a}</b>. Ahora lo importante: ¿qué te hizo considerarla? ¿El enunciado, algo que recordabas de clase, cómo estaba redactada?`};
+  }
+
+  // 6. juicios sobre la dificultad
+  if(/f[aá]cil|obvia|simple|r[aá]pid|directa/i.test(bajo))
+    return {t:`Si te resultó fácil, lo útil es decir <b>por qué</b>: ¿se podía acertar sin hacer el cálculo? ¿Alguna alternativa se descartaba de una mirada? Eso le dice a la docente que hay que subir la exigencia.`};
+  if(/dif[ií]cil|complicad|enredad|cost[oó]|no pude|imposible|larg[ao]/i.test(bajo))
+    return {t:`¿Y difícil por dónde: por el concepto, por el cálculo o por cómo estaba escrita? No es lo mismo, y la diferencia es justo lo que hay que corregir.`};
+
+  // 7. mensaje sustantivo: se le ofrece llevarlo al comentario
+  if(t.length>=60 && (RX_CAUSA.test(t)||RX_CONCR.test(t)))
+    return {t:`Eso ya es un comentario útil: dice algo concreto y explica por qué. ¿Lo paso al campo de comentario para que lo puedas afinar?`, pasar:t};
+
+  // 8. mencionó algo concreto del contenido: se le devuelve esa misma palabra
+  if(RX_CONCR.test(t)){
+    const pal=(t.match(RX_CONCR)||[""])[0];
+    return {t:`Te quedaste en “<b>${esc(pal)}</b>”. Eso es lo concreto que hay que dejar por escrito. ¿Te pasó por cómo estaba planteada la pregunta, o fue un error tuyo de cálculo? Las dos cosas sirven, pero se corrigen distinto.`};
+  }
+
+  // 9. respuesta general, siempre anclada en algo suyo
+  const gen=[
+    x.c.correcto
+      ? `Acertaste, así que cuéntame lo otro: ¿alguna alternativa incorrecta estuvo cerca de convencerte?`
+      : `Volvamos a tu respuesta: elegiste la ${x.c.resp}. ¿Qué tenía esa alternativa que te pareció correcto?`,
+    `¿Y del enunciado? ¿Hay alguna palabra o algún dato que hubieras escrito de otra forma?`,
+    `Piensa en quien va a leer esto para arreglar la pregunta: ¿qué le dirías que cambie primero?`,
+    x.d.dx==="ok" ? `Tu comentario ya está bastante completo. ¿Le agregarías algo sobre la solución comentada?`
+                  : `Con lo que llevas escrito todavía no se entiende qué pasó exactamente. Dame un detalle concreto.`
+  ];
+  return {t:rot(gen,n)};
+}
+
+/* ---- avisos que el asistente lanza solo, sin que el estudiante escriba ---- */
+function empujeEst(qid){
+  const {c,min}=ctxEst(qid);
+  if(c._avisoMin) return null;
+  if((c.chars||0)>=min){ c._avisoMin=1; return `Ya tienes los ${min} caracteres. Léelo una vez en voz baja: ¿se entiende sin haber visto la pregunta? Si sí, envíalo.`; }
+  return null;
+}
+
+/* ============================ RENDER GENERAL ============================ */
+function render(){
+  const m=$("#main");
+  $("#mb-est").className = rol==="est"?"on":"";
+  $("#mb-doc").className = rol==="doc"?"on":"";
+  const bc=$("#mb-coach");
+  if(bc){
+    const m=DB.config.coach;
+    bc.className = m==="off" ? "" : "on";
+    bc.textContent = m==="on" ? "Asistente: activado" : (m==="off" ? "Asistente: apagado" : "Asistente: repartido A/B");
+  }
+  if(rol==="doc"){
+    m.className="wide";
+    $("#hright").innerHTML='<span class="who">Panel docente</span>';
+    m.innerHTML = tabsDoc() + vistaDoc();
+  }else{
+    m.className="";
+    $("#hright").innerHTML = cod
+      ? '<span class="who">'+esc(cod)+'</span> <button class="hbtn" onclick="salir()">Salir</button>'
+      : '<span class="who">Sin sesión</span>';
+    m.innerHTML = vistaEst();
+  }
+  tex(m);
+  // subir al inicio solo cuando cambia la pantalla; valorar o escribir no mueve la página
+  const clave=[rol,vista,tab,cod,S()?S().idx:""].join("|");
+  if(clave!==_pantalla){ _pantalla=clave; window.scrollTo({top:0}); }
+}
+function setRol(r){ rol=r; tab="diagnostico"; verDoc=null; render(); }
+
+/* ============================ ESTUDIANTE ============================ */
+function vistaEst(){
+  if(!cod || !S()) return pantallaLogin();
+  const s=S();
+  if(vista==="bienvenida") return pantallaBienvenida();
+  if(vista==="encuesta")   return pantallaEncuesta();
+  if(vista==="fin")        return pantallaFin();
+  return pantallaCiclo();
+}
+
+/* ---------- 1. ingreso por código ---------- */
+function pantallaLogin(){
+  return `
+  <div class="card" style="margin-top:26px">
+    <h1>Ágora</h1>
+    <div class="sub">Curso MAT1219 · Álgebra Lineal</div>
+    <p>Busca tu nombre en la lista y toca tu código. Tus respuestas y comentarios viajan solo con ese código: no llevan tu nombre.</p>
+    <label for="cod">Tu código</label>
+    <input type="text" id="cod" placeholder="EST-001" autocomplete="off" autocapitalize="characters"
+           onkeydown="if(event.key==='Enter')entrar()" style="letter-spacing:1px;font-size:18px">
+    <div class="note" id="codmsg">Tres letras, guion y tres dígitos. Por ejemplo <code class="k">EST-001</code>.</div>
+    <button class="btn block" style="margin-top:14px" onclick="entrar()">Entrar</button>
+  </div>
+
+  <div class="card">
+    <h2>¿Cuál es mi código?</h2>
+    <div class="sub">Toca tu nombre y lo escribimos por ti.</div>
+    <input type="text" id="buscar" placeholder="Escribe tu apellido para filtrar" oninput="filtrarCurso(this.value)" autocomplete="off">
+    <div class="roster" id="roster">${CURSO.map((n,i)=>
+      `<button class="rw" data-n="${esc(n.toLowerCase())}" onclick="elegirCodigo('${codigoDe(i)}')">
+         <span class="rc">${codigoDe(i)}</span><span class="rn">${esc(n)}</span></button>`).join("")}</div>
+    <div class="note">Si tu nombre no está en la lista, avísale a la docente antes de continuar.</div>
+  </div>`;
+}
+function filtrarCurso(q){
+  const t=(q||"").toLowerCase().trim();
+  document.querySelectorAll("#roster .rw").forEach(el=>{
+    el.hidden = t ? el.dataset.n.indexOf(t)<0 : false;
+  });
+}
+function elegirCodigo(c){
+  const el=$("#cod"); if(!el) return;
+  el.value=c; el.focus();
+  document.querySelectorAll("#roster .rw").forEach(b=>b.classList.toggle("on", b.textContent.indexOf(c)===0));
+  toast("Código "+c+" · toca Entrar");
+}
+function entrar(){
+  const v=($("#cod").value||"").trim().toUpperCase();
+  const err=m=>{ $("#codmsg").innerHTML='<span style="color:var(--bad);font-weight:600">'+m+'</span>'; };
+  if(!/^EST-\d{3}$/.test(v)){ err("Ese código no tiene el formato esperado. Debe verse como EST-001."); return; }
+  if(!nombreDe(v)){ err("Ese código no está en la lista del curso. Revisa la lista de abajo."); return; }
+  cod=v;
+  if(!DB.sesiones[cod]){
+    DB.sesiones[cod]={codigo:cod,creada:ahora(),ultima:ahora(),aperturas:1,idx:0,ciclos:{},insignias:[],encuesta:null,terminado:false,
+      grupo: DB.config.coach==="on" ? "coach" : (DB.config.coach==="off" ? "control" : grupoDe(cod))};
+    ev("sesion_iniciada","","", "grupo="+DB.sesiones[cod].grupo);
+  }else{
+    DB.sesiones[cod].aperturas++; DB.sesiones[cod].ultima=ahora();
+    ev("sesion_retomada","","", "apertura "+DB.sesiones[cod].aperturas);
+    toast("Bienvenido de vuelta. Retomamos donde quedaste.");
+  }
+  guardar();
+  // retoma donde quedó: basta con haber empezado un ciclo, no con haberlo terminado
+  vista = (completos(S())>0 || Object.keys(S().ciclos||{}).length>0) ? "ciclo" : "bienvenida";
+  if(S().terminado) vista="fin";
+  render();
+}
+function salir(){ if(cod) ev("sesion_cerrada"); cod=null; vista="login"; render(); }
+
+/* ---------- 2. bienvenida ---------- */
+function pantallaBienvenida(){
+  return `
+  <div class="card">
+    <h1>Hola</h1>
+    <div class="sub">${esc(cod)} · ${NQ()} preguntas de Álgebra Lineal</div>
+    <p style="font-size:16px;line-height:1.7">
+      En cada pregunta harás <b>tres cosas</b>:<br>
+      <b>1.</b> Responder la pregunta y ver de inmediato la solución comentada.<br>
+      <b>2.</b> Valorar la pregunta según cuatro criterios.<br>
+      <b>3.</b> Escribir un comentario para quien la diseñó.
+    </p>
+    <p>Cuando completas las tres, ganas una estrella. No hay nota: ni por acertar, ni por valorar alto. Puedes cerrar el navegador y volver: no se pierde nada.</p>
+    ${barraProgreso()}
+    <button class="btn block" style="margin-top:16px" onclick="empezar()">Comenzar</button>
+    <div class="note">Toma unos 20 minutos. Funciona bien en el celular.</div>
+  </div>
+  ${(()=>{const s=S(); if(!s.chatBien||!s.chatBien.length) s.chatBien=[{de:"ia",t:saludoBien(),ts:ahora()}];
+    return `<div class="card"><h2>¿Alguna duda antes de empezar?</h2>
+      <div class="sub">Pregúntale al asistente lo que quieras sobre cómo funciona esto.</div>
+      ${chatHTML({id:"chat-bien", titulo:"Asistente", msgs:s.chatBien, fn:"enviarBien", arg:"",
+        ph:"Escribe tu duda…",
+        sug:["¿En qué consiste?","¿Lleva nota?","¿Es anónimo?","¿Puedo salir y volver?"]})}</div>`;})()}`;
+}
+function empezar(){ vista="ciclo"; render(); }
+
+function barraProgreso(){
+  const s=S(), n=completos(s);
+  return `<div class="line" style="display:flex;justify-content:space-between;font-size:13px;margin:14px 0 7px">
+      <span class="muted">Has completado <b>${n}</b> de <b>${NQ()}</b> preguntas</span>
+      <span class="stars-count">${n?"⭐".repeat(Math.min(n,NQ())):"sin estrellas aún"}</span></div>
+    <div class="progress"><i style="width:${pct(n,NQ())}%"></i></div>`;
+}
+
+/* ---------- 3. el ciclo de una pregunta ---------- */
+function proximaPregunta(){
+  const s=S();
+  for(let i=0;i<NQ();i++){ const q=DB.preguntas[i]; if(!s.ciclos[q.id]||!s.ciclos[q.id].completo) return i; }
+  return -1;
+}
+function pantallaCiclo(){
+  const s=S(), i=proximaPregunta();
+  if(i<0){ vista = s.encuesta ? "fin" : "encuesta"; return vistaEst(); }
+  s.idx=i;
+  const q=DB.preguntas[i], c=C(q.id), n=completos(s);
+  if(!c._abierta){ c._abierta=1; ev("pregunta_abierta",q.id,c.paso); }
+  guardar();
+
+  let html = `
+  <div class="topbar">
+    <div class="line">
+      <span><b>Pregunta ${i+1}</b> de ${NQ()}</span>
+      <span class="stars-count">${n} ⭐</span>
+    </div>
+    <div class="progress"><i style="width:${pct(n,NQ())}%"></i></div>
+  </div>
+
+  <div class="card">
+    <div><span class="tag">${esc(q.tema)}</span></div>
+    <div class="stem">${md(q.stem)}</div>
+    <div class="opts">${q.alts.map((a,k)=>optHTML(q,c,a,k)).join("")}</div>`;
+
+  if(c.paso==="responder"){
+    html += `<button class="btn block" id="btn-conf" ${c.resp==null?"disabled":""} onclick="confirmar('${q.id}')">Confirmar respuesta</button>
+      <div class="note">Una vez que confirmes no podrás cambiarla.</div>`;
+  }
+  html += `</div>`;
+
+  if(c.paso!=="responder") html += bloqueRevelacion(q,c);
+  if(c.paso==="valorar"||c.paso==="comentar") html += bloqueRubrica(q,c);
+  // el asistente aparece en cuanto la respuesta queda confirmada: así se le puede
+  // preguntar cómo empezar antes de haber escrito una sola palabra
+  if(c.paso==="valorar" && coachActivo())
+    html += `<div class="card"><h2>¿Dudas sobre qué decir?</h2>
+      <div class="sub">Puedes conversar con el asistente ahora o más adelante, mientras escribes tu comentario.</div>
+      ${coachHTML(c)}</div>`;
+  if(c.paso==="comentar") html += bloqueComentario(q,c);
+
+  return html;
+}
+function optHTML(q,c,a,k){
+  const letra=L[k], resp=c.resp, cl=q.clave;
+  let cls="opt", mark="";
+  if(c.paso==="responder"){
+    if(resp===letra) cls+=" sel";
+    return `<button class="${cls}" onclick="elegir('${q.id}','${letra}')"><span class="L">${letra}</span><span class="txt">${md(a)}</span></button>`;
+  }
+  cls+=" locked";
+  if(letra===cl){ cls+=" right"; mark='<span class="mark" style="color:var(--ok)">✔ correcta</span>'; }
+  else if(letra===resp){ cls+=" wrong"; mark='<span class="mark" style="color:var(--bad)">tu respuesta</span>'; }
+  if(letra===cl && letra===resp) mark='<span class="mark" style="color:var(--ok)">✔ tu respuesta</span>';
+  return `<div class="${cls}"><span class="L">${letra}</span><span class="txt">${md(a)}</span>${mark}</div>`;
+}
+function elegir(qid,letra){
+  const c=C(qid); if(c.paso!=="responder") return;
+  c.resp=letra; guardar();
+  document.querySelectorAll(".opts .opt").forEach(el=>{
+    el.classList.toggle("sel", el.querySelector(".L").textContent===letra);
+  });
+  const b=$("#btn-conf"); if(b) b.disabled=false;
+}
+function confirmar(qid){
+  const c=C(qid), q=DB.preguntas.find(x=>x.id===qid);
+  if(!c.resp) return;
+  c.tResp=ahora(); c.correcto=(c.resp===q.clave); c.paso="valorar";
+  ev("respuesta_enviada",qid,"responder", c.resp+(c.correcto?" (correcta)":" (incorrecta)"));
+  guardar(); render();
+  setTimeout(()=>{ const el=$(".reveal"); if(el&&el.scrollIntoView) el.scrollIntoView({behavior:"smooth",block:"center"}); },60);
+}
+function bloqueRevelacion(q,c){
+  return `<div class="card" style="padding:0;overflow:hidden">
+    <div class="reveal ${c.correcto?"good":"bad"}" style="border-radius:0">
+      <div class="verdict">${c.correcto?"✔ Correcta":"✘ Incorrecta"} · la clave era <b>${q.clave}</b></div>
+      <div class="sol">${md(q.sol)}</div>
+    </div></div>`;
+}
+
+/* ---------- 4. rúbrica ---------- */
+function bloqueRubrica(q,c){
+  const lista=CRIT().map(cr=>{
+    const val=c.rub[cr.id];
+    return `<div class="crit ${cr.tipo==="categoria"?"cat":""}" data-crit="${cr.id}">
+      <div class="cn">${esc(cr.nombre)} ${cr.tipo==="categoria"?'<span class="pill gray" style="font-weight:600">categoría, no puntaje</span>':""}</div>
+      <div class="ch">${esc(cr.ayuda||"")}</div>
+      <div class="levels">${cr.niveles.map((nv,k)=>
+        `<button class="lv ${val===k+1?"on":""}" onclick="valorar('${q.id}','${cr.id}',${k+1})">
+           <span class="n">${cr.tipo==="categoria"?"OPCIÓN "+(k+1):"NIVEL "+(k+1)}</span>${esc(nv)}</button>`).join("")}</div>
+    </div>`;
+  }).join("");
+  const listo=CRIT().every(cr=>c.rub[cr.id]);
+  return `<div class="card">
+    <h2>Valora esta pregunta</h2>
+    <div class="sub">Ahora que viste la solución, di cómo funcionó la pregunta. Los cuatro criterios son obligatorios.</div>
+    ${lista}
+    ${c.paso==="valorar"?`<button class="btn block" id="btn-rub" style="margin-top:6px" ${listo?"":"disabled"} onclick="enviarRubrica('${q.id}')">Continuar al comentario</button>
+      <div class="note" id="rub-aviso" ${listo?"hidden":""}>Falta marcar un nivel en cada criterio.</div>`:""}
+  </div>`;
+}
+function valorar(qid,crid,n){
+  const c=C(qid); if(c.paso!=="valorar"&&c.paso!=="comentar") return;
+  c.rub[crid]=n; guardar();
+  // actualización quirúrgica: no se vuelve a dibujar la pantalla, así no salta el scroll
+  const caja=document.querySelector('[data-crit="'+crid+'"]');
+  if(caja) caja.querySelectorAll(".lv").forEach((b,k)=>b.classList.toggle("on",k+1===n));
+  const listo=CRIT().every(cr=>c.rub[cr.id]);
+  const btn=$("#btn-rub"); if(btn) btn.disabled=!listo;
+  const av=$("#rub-aviso"); if(av) av.hidden=listo;
+  if(!caja) render();
+}
+function enviarRubrica(qid){
+  const c=C(qid);
+  if(!CRIT().every(cr=>c.rub[cr.id])) return;
+  c.tRub=ahora(); c.paso="comentar";
+  if(c._pendiente){ c.com=(c.com||"")+c._pendiente; c.chars=c.com.trim().length; c._pendiente=null; }
+  ev("rubrica_enviada",qid,"valorar", CRIT().map(cr=>cr.id+"="+c.rub[cr.id]).join(" "));
+  guardar(); render();
+  setTimeout(()=>{ const el=$("#coment"); if(el){ if(el.scrollIntoView) el.scrollIntoView({behavior:"smooth",block:"center"}); el.focus(); } },60);
+}
+
+/* ---------- 5. comentario ---------- */
+function bloqueComentario(q,c){
+  const n=(c.com||"").trim().length, min=MIN();
+  return `<div class="card">
+    <h2>Escribe tu comentario</h2>
+    <div class="sub">${esc(DB.config.consigna)}</div>
+    <textarea id="coment" placeholder="Por ejemplo: dudé entre B y C porque…" oninput="escribir('${q.id}',this.value)">${esc(c.com||"")}</textarea>
+    <div class="counter ${n>=min?"ok":""}" id="cnt">${n} / ${min} caracteres mínimos${n>=min?" ✔":""}</div>
+    ${coachHTML(c)}
+    <button class="btn block ok" style="margin-top:8px" id="btn-fin" ${n>=min?"":"disabled"} onclick="completarCiclo('${q.id}')">Completar y ganar mi estrella ⭐</button>
+    <div class="note">Solo la docente lee tu comentario. Tus compañeros no lo ven.</div>
+  </div>`;
+}
+function escribir(qid,v){
+  const c=C(qid); c.com=v; c.chars=v.trim().length;
+  const min=MIN(), n=c.chars, el=$("#cnt"), b=$("#btn-fin");
+  if(el){ el.textContent=n+" / "+min+" caracteres mínimos"+(n>=min?" ✔":""); el.className="counter"+(n>=min?" ok":""); }
+  if(b) b.disabled = n<min;
+  if(c.coach && c.coach.charsAviso!=null && n>c.coach.charsAviso+15) c.coach.edito=true;
+  if(coachActivo()){
+    clearTimeout(window._ce);
+    window._ce=setTimeout(()=>{
+      const e=empujeEst(qid);
+      if(e){ c.chat=c.chat||[]; c.chat.push({de:"ia",t:e,ts:ahora()}); guardar(); pintarChat("chat-est",c.chat); }
+    },900);
+  }
+  clearTimeout(window._sv); window._sv=setTimeout(guardar,400);
+}
+
+/* ---- 1. chat de la bienvenida: orienta antes de empezar ---- */
+function saludoBien(){
+  return `Hola. Antes de partir, en una línea: vas a responder <b>${NQ()} preguntas</b> de Álgebra Lineal y, después de cada una, contar qué te pareció. No es una prueba y no lleva nota. ¿Te explico algo más o empezamos?`;
+}
+function responderBien(txt){
+  const b=(txt||"").trim().toLowerCase();
+  if(/nota|calific|eval[uú]a|puntaje|me van a evaluar|cuenta para/i.test(b))
+    return `No. Nada de lo que hagas aquí lleva nota. Ni acertar, ni valorar alto, ni escribir mucho. Las estrellas son solo por completar los tres pasos de cada pregunta.`;
+  if(/an[oó]nim|nombre|saben qui[eé]n|privad|ve mi|leen/i.test(b))
+    return `Tus respuestas viajan solo con tu código, ${esc(cod)}, sin tu nombre. Los comentarios los lee únicamente la docente: tus compañeros no los ven.`;
+  if(/cu[aá]nto (dura|tarda|demora|me toma)|tiempo|r[aá]pido|largo es/i.test(b))
+    return `Unos 20 minutos para las ${NQ()} preguntas. Puedes cerrar el navegador cuando quieras y volver: retomas exactamente donde quedaste.`;
+  if(/salir|cerrar|volver|despu[eé]s|pausa|guarda/i.test(b))
+    return `Sí, puedes salir en cualquier momento. Todo queda guardado en este dispositivo y al volver con tu código sigues donde ibas.`;
+  if(/qu[eé] hago|qu[eé] tengo que|c[oó]mo funciona|explic|pasos|en qu[eé] consiste|no entiendo|se trata|de qu[eé] va|qu[eé] es esto|para qu[eé] es|qu[eé] hay que hacer/i.test(b))
+    return `Tres pasos por pregunta:<ul><li><b>Respondes</b> y ves de inmediato si acertaste, con la solución explicada.</li><li><b>Valoras</b> la pregunta en cuatro criterios: si se entendía, qué tan difícil era, si las alternativas incorrectas eran creíbles y si la explicación te sirvió.</li><li><b>Comentas</b> para quien la diseñó, mínimo ${MIN()} caracteres.</li></ul>Al completar los tres ganas una estrella.`;
+  if(/comentario|escribir|qu[eé] escribo|redact/i.test(b))
+    return `El comentario es para quien diseñó la pregunta: qué te hizo dudar, si alguna alternativa incorrecta te pareció tentadora y por qué, o qué del enunciado mejorarías. Cuando llegues ahí voy a estar acompañándote.`;
+  if(/celular|tel[eé]fono|computador|dispositivo/i.test(b))
+    return `Funciona en el celular, que es como la mayoría lo va a usar. Si alguna matriz se sale de la pantalla, se puede desplazar hacia el lado — y si te molesta, dilo en el comentario: eso es justo lo que queremos saber.`;
+  if(/matem[aá]tic|materia|contenido|[aá]lgebra|estudiar|preparar/i.test(b))
+    return `Es materia del curso: sistemas de ecuaciones, matrices, determinantes e inversas. No hace falta que prepares nada; si te equivocas verás la solución explicada, que es parte de la idea.`;
+  if(/empez|empiez|empec|empiec|comenz|comenc|listo|vamos|dale|comenzar|partamos|ok|s[ií]\b/i.test(b))
+    return `Perfecto. Pulsa <b>Comenzar</b> cuando quieras.`;
+  return `Puedo contarte <b>en qué consiste</b>, <b>cuánto dura</b>, <b>si lleva nota</b>, <b>si es anónimo</b> o <b>si puedes salir y volver</b>. ¿Qué te sirve?`;
+}
+function enviarBien(_,txt){
+  const t=(txt||"").trim(); if(!t) return;
+  const s=S(); s.chatBien=s.chatBien||[];
+  s.chatBien.push({de:"yo",t:t,ts:ahora()});
+  pintarChat("chat-bien",s.chatBien);
+  ev("chat_bienvenida","","bienvenida","turno "+s.chatBien.filter(m=>m.de==="yo").length);
+  guardar(); escribiendo("chat-bien",true);
+  setTimeout(()=>{ escribiendo("chat-bien",false);
+    s.chatBien.push({de:"ia",t:responderBien(t),ts:ahora()});
+    guardar(); pintarChat("chat-bien",s.chatBien); }, 420+Math.min(700,t.length*6));
+}
+
+/* ---- 2. encuesta de salida conversacional ---- */
+function preguntaEnc(i){
+  const p=ENCUESTA[i]; if(!p) return null;
+  return p.tipo==="likert"
+    ? `${esc(p.t)} <span class="muted small">(1 = ${esc(p.ext[0])}, 5 = ${esc(p.ext[1])})</span>`
+    : esc(p.t);
+}
+function sugEnc(i){
+  const p=ENCUESTA[i]; if(!p) return [];
+  return p.tipo==="likert" ? ["1","2","3","4","5"] : ["Nada en particular"];
+}
+function enviarEnc(_,txt){
+  const t=(txt||"").trim(); if(!t) return;
+  const s=S(); s.chatEnc=s.chatEnc||[]; s.encResp=s.encResp||{};
+  const i=s.encPaso||0, p=ENCUESTA[i];
+  s.chatEnc.push({de:"yo",t:t,ts:ahora()});
+  pintarChat("chat-enc",s.chatEnc);
+  let resp=null, error=null;
+  if(!p){ resp=`Ya está todo respondido. Pulsa <b>Enviar y terminar</b> cuando quieras.`; }
+  else if(p.tipo==="likert"){
+    const m=t.match(/[1-5]/);
+    if(!m) error=`Necesito un número del 1 al 5 para esta. ${preguntaEnc(i)}`;
+    else { s.encResp[p.id]=+m[0]; }
+  } else {
+    s.encResp[p.id] = /^(nada|no|ninguno|ninguna|nada en particular|-)$/i.test(t) ? "" : t;
+  }
+  if(!error && p){
+    s.encPaso=i+1;
+    const sig=ENCUESTA[s.encPaso];
+    resp = sig ? `${rot(["Anotado.","Gracias.","Listo."],i)} ${preguntaEnc(s.encPaso)}`
+               : `Eso es todo. Gracias por probar Ágora — pulsa <b>Enviar y terminar</b> para cerrar.`;
+  }
+  guardar(); escribiendo("chat-enc",true);
+  setTimeout(()=>{ escribiendo("chat-enc",false);
+    s.chatEnc.push({de:"ia",t:error||resp,ts:ahora()});
+    guardar(); render(); }, 380+Math.min(500,t.length*5));
+}
+
+/* ---- interfaz de chat compartida ---- */
+function atr(x){ return esc(JSON.stringify(x===undefined?"":x)); }
+function chatHTML(o){
+  return `<div class="chat" id="${o.id}">
+    <div class="hd"><span class="av">◆</span><b>${esc(o.titulo)}</b>
+      <span class="spacer" style="flex:1"></span><span class="pill gray">asistente</span></div>
+    <div class="body" id="${o.id}-body">${o.msgs.map(m=>msgHTML(m,o.id)).join("")}</div>
+    <div class="esc" id="${o.id}-esc" hidden>escribiendo…</div>
+    ${o.sug&&o.sug.length?`<div class="sug">${o.sug.map(s=>
+      `<button onclick="${o.fn}(${atr(o.arg)},${atr(s)})">${esc(s)}</button>`).join("")}</div>`:""}
+    <div class="in">
+      <input type="text" id="${o.id}-in" placeholder="${esc(o.ph)}" autocomplete="off"
+             onkeydown="if(event.key==='Enter'){${o.fn}(${atr(o.arg)},this.value);this.value=''}">
+      <button class="btn sm" onclick="const i=$('#${o.id}-in');${o.fn}(${atr(o.arg)},i.value);i.value=''">Enviar</button>
+    </div>
+  </div>`;
+}
+function msgHTML(m,cid){
+  return `<div class="msg ${m.de==="ia"?"ia":"yo"}">${m.de==="ia"?m.t:esc(m.t)}
+    ${m.pasar?`<div class="acc"><button class="btn sm" onclick="pasarAlComentario(${atr(m.pasar)})">${esc(m.etiqueta||"Pasarlo al comentario")}</button></div>`:""}
+  </div>`;
+}
+function pintarChat(id,msgs){
+  const b=$("#"+id+"-body"); if(!b) return;
+  b.innerHTML=msgs.map(m=>msgHTML(m,id)).join("");
+  b.scrollTop=b.scrollHeight;
+}
+function escribiendo(id,on){ const e=$("#"+id+"-esc"); if(e) e.hidden=!on;
+  const b=$("#"+id+"-body"); if(b) b.scrollTop=b.scrollHeight; }
+
+/* ---- chat del estudiante ---- */
+function coachActivo(){
+  const s=S(); if(!s) return false;
+  if(DB.config.coach==="on")  return true;
+  if(DB.config.coach==="off") return false;
+  return s.grupo==="coach";
+}
+function coachHTML(c){
+  if(!coachActivo()) return "";
+  if(!c.chat||!c.chat.length){
+    c.chat=[{de:"ia",t:saludoEst(c._qid),ts:ahora()}];
+    if(c.coach) c.coach.visto=Math.max(1,c.coach.visto||0);
+  }
+  return chatHTML({id:"chat-est", titulo:"Asistente de escritura", msgs:c.chat, fn:"enviarEst", arg:c._qid,
+    ph:"Escríbele al asistente…",
+    sug:["No sé cómo empezar","¿Qué se supone que escriba?","¿Cuánto tengo que escribir?","La pregunta me pareció difícil"]});
+}
+function enviarEst(qid,txt){
+  const t=(txt||"").trim(); if(!t) return;
+  const c=C(qid);
+  c.chat=c.chat||[];
+  c.chat.push({de:"yo",t:t,ts:ahora()});
+  pintarChat("chat-est",c.chat);
+  ev("chat_estudiante",qid,"comentar","turno "+c.chat.filter(m=>m.de==="yo").length);
+  c.coach=c.coach||{visto:0,dx:[],charsAviso:null,edito:false,ocultado:false};
+  c.coach.visto++;
+  guardar();
+  escribiendo("chat-est",true);
+  setTimeout(()=>{
+    escribiendo("chat-est",false);
+    const r=responderEst(qid,t);
+    c.chat.push({de:"ia",t:r.t,pasar:r.pasar||null,etiqueta:r.etiqueta||null,ts:ahora()});
+    guardar(); pintarChat("chat-est",c.chat);
+  }, 420+Math.min(700,t.length*6));
+}
+function pasarAlComentario(txt){
+  const qid=DB.preguntas[S().idx].id, c=C(qid);
+  if(c.paso==="valorar"){ toast("Termina de valorar y lo pego en tu comentario"); c._pendiente=txt; guardar(); return; }
+  const ta=$("#coment"); if(!ta) return;
+  const sep=(c.com&&c.com.trim())?" ":"";
+  ta.value=(c.com||"")+sep+txt;
+  escribir(qid,ta.value);
+  ta.focus();
+  ev("chat_traspaso",qid,"comentar",txt.length+" caracteres");
+  toast("Copiado al comentario");
+}
+
+function completarCiclo(qid){
+  const c=C(qid), s=S();
+  if(c.chars<MIN()) return;
+  c.tCom=ahora(); c.completo=true; c.paso="listo";
+  ev("comentario_enviado",qid,"comentar", c.chars+" caracteres");
+  if(c.coach && c.coach.visto) ev("coach_resultado",qid,"comentar",
+      "avisos="+c.coach.visto+" editó="+(c.coach.edito?"sí":"no")+" caracteres "+c.coach.charsAviso+"→"+c.chars);
+  ev("ciclo_completo",qid,"listo", "duracion_s="+seg(c.ini,c.tCom));
+  s.ultima=ahora(); guardar();
+  animarEstrella("⭐");
+  const nuevas=revisarInsignias(); guardar();
+  setTimeout(()=>{
+    if(nuevas.length){ animarEstrella(nuevas[0].ic); toast("Nueva insignia: "+nuevas[0].n); }
+    render();
+    if(proximaPregunta()<0) toast("Terminaste las "+NQ()+" preguntas");
+  },950);
+}
+
+/* ---------- 6. encuesta de salida ---------- */
+let encForm=false;
+function pantallaEncuesta(){
+  const s=S();
+  s.encResp=s.encResp||{};
+  if(s.encPaso==null) s.encPaso=0;
+  if(!s.chatEnc||!s.chatEnc.length)
+    s.chatEnc=[{de:"ia",t:`Última parte, y no es sobre Álgebra Lineal sino sobre la plataforma: cinco preguntas cortas para poder mejorarla. Empecemos. ${preguntaEnc(0)}`,ts:ahora()}];
+  const faltan=ENCUESTA.filter(p=>p.tipo==="likert"&&!s.encResp[p.id]);
+  const resumen=ENCUESTA.filter(p=>s.encResp[p.id]!==undefined).map(p=>
+    `<tr><td class="muted small">${esc(p.t)}</td><td><b>${p.tipo==="likert"?s.encResp[p.id]+" / 5":(s.encResp[p.id]?esc(String(s.encResp[p.id]).slice(0,90)):"—")}</b></td></tr>`).join("");
+  if(encForm) return encuestaFormulario();
+  return `<div class="card">
+    <h1>Última parte</h1>
+    <div class="sub">Cinco preguntas sobre la plataforma. Tienes ${completos(s)} de ${NQ()} preguntas completas y ${s.insignias.length} insignia(s).</div>
+    ${chatHTML({id:"chat-enc", titulo:"Encuesta de salida", msgs:s.chatEnc, fn:"enviarEnc", arg:"",
+      ph:ENCUESTA[s.encPaso]?(ENCUESTA[s.encPaso].tipo==="likert"?"Responde con un número del 1 al 5…":"Escribe tu respuesta…"):"Ya está todo respondido",
+      sug:sugEnc(s.encPaso)})}
+    ${resumen?`<h3>Lo que llevas respondido</h3><div class="scroll"><table>${resumen}</table></div>`:""}
+    <button class="btn block ok" style="margin-top:14px" ${faltan.length?"disabled":""} onclick="enviarEncuesta()">Enviar y terminar</button>
+    ${faltan.length?`<div class="note">Faltan ${faltan.length} de las preguntas de escala.</div>`:""}
+    <div class="note"><a href="#" onclick="encForm=true;render();return false">Prefiero responderlo en un formulario</a></div>
+  </div>`;
+}
+function encuestaFormulario(){
+  const s=S();
+  return `<div class="card">
+    <h1>Última parte</h1>
+    <div class="sub">Cinco preguntas sobre la plataforma, no sobre Álgebra Lineal.</div>
+    ${ENCUESTA.map(p=>{
+      if(p.tipo==="likert"){
+        return `<div style="margin:16px 0"><label style="margin:0 0 4px">${esc(p.t)}</label>
+          <div class="likert">${[1,2,3,4,5].map(n=>
+            `<button class="${s.encResp[p.id]===n?"on":""}" onclick="encSet('${p.id}',${n})">${n}${n===1?"<small>"+esc(p.ext[0])+"</small>":(n===5?"<small>"+esc(p.ext[1])+"</small>":"")}</button>`).join("")}</div></div>`;
+      }
+      return `<div style="margin:16px 0"><label style="margin:0 0 4px">${esc(p.t)}</label>
+        <textarea style="min-height:80px" oninput="S().encResp['${p.id}']=this.value">${esc(s.encResp[p.id]||"")}</textarea></div>`;
+    }).join("")}
+    <button class="btn block ok" onclick="enviarEncuesta()">Enviar y terminar</button>
+    <div class="note"><a href="#" onclick="encForm=false;render();return false">Volver a responderlo conversando</a></div>
+  </div>`;
+}
+function encSet(id,n){ S().encResp[id]=n; render(); }
+function enviarEncuesta(){
+  const s=S();
+  const faltan=ENCUESTA.filter(p=>p.tipo==="likert"&&!s.encResp[p.id]);
+  if(faltan.length){ toast("Faltan las preguntas de escala"); return; }
+  s.encuesta={...s.encResp,ts:ahora()}; s.terminado=true;
+  ev("encuesta_enviada","","", "");
+  guardar(); vista="fin"; render();
+}
+
+/* ---------- 7. cierre ---------- */
+function pantallaFin(){
+  const s=S(), n=completos(s);
+  return `<div class="card" style="text-align:center">
+    <div style="font-size:56px;line-height:1.2">🏁</div>
+    <h1 style="margin-top:6px">Listo, ${esc(cod)}</h1>
+    <p>Completaste <b>${n} de ${NQ()}</b> preguntas y ganaste <b>${n}</b> estrella(s).</p>
+    <div class="badges" style="justify-content:center">
+      ${INSIGNIAS.map(b=>`<div class="badge ${s.insignias.indexOf(b.id)>=0?"got":""}">
+        <span class="ic">${b.ic}</span><b>${esc(b.n)}</b><span class="muted small">${esc(b.d)}</span></div>`).join("")}
+    </div>
+    <p class="muted small" style="margin-top:18px">Tus comentarios llegan solo a la docente. Gracias por probar Ágora.</p>
+    <button class="btn sec" style="margin-top:8px" onclick="salir()">Cerrar sesión</button>
+  </div>`;
+}
+
+/* ============================ PANEL DOCENTE ============================ */
+const TABS=[["diagnostico","Diagnóstico"],["resultados","Resultados por pregunta"],["general","Vista general"],["comentarios","Comentarios"],
+            ["preguntas","Preguntas"],["rubrica","Rúbrica y ajustes"],["telemetria","Telemetría"],["exportar","Exportar"]];
+function tabsDoc(){
+  return `<nav class="tabs" style="margin:-18px -18px 18px">${TABS.map(([k,n])=>
+    `<button class="${tab===k?"active":""}" onclick="setTab('${k}')">${n}</button>`).join("")}</nav>`;
+}
+function setTab(t){ tab=t; verDoc=null; render(); }
+function vistaDoc(){
+  const V={diagnostico:docDiagnostico,resultados:docResultados,general:docGeneral,comentarios:docComentarios,
+           preguntas:docPreguntas,rubrica:docRubrica,telemetria:docTelemetria,exportar:docExportar};
+  return (V[tab]||docDiagnostico)();
+}
+
+/* --- agregados --- */
+function sesiones(){ return Object.values(DB.sesiones); }
+function statsQ(q){
+  const dist={A:0,B:0,C:0,D:0}; let tot=0, ok=0;
+  const rub={}, coms=[]; CRIT().forEach(c=>rub[c.id]=[0,0,0]);
+  sesiones().forEach(s=>{
+    const c=(s.ciclos||{})[q.id]; if(!c) return;
+    if(c.resp){ dist[c.resp]=(dist[c.resp]||0)+1; tot++; if(c.resp===q.clave) ok++; }
+    CRIT().forEach(cr=>{ const v=c.rub&&c.rub[cr.id]; if(v) rub[cr.id][v-1]++; });
+    if(c.completo&&c.com) coms.push({cod:s.codigo,txt:c.com,chars:c.chars,ts:c.tCom});
+  });
+  return {dist,tot,ok,rub,coms};
+}
+function prom(arr){ const n=arr.reduce((a,b)=>a+b,0); if(!n) return null; return ((arr[0]*1+arr[1]*2+arr[2]*3)/n).toFixed(2); }
+
+/* ---- chat del panel docente: responde con los datos ya calculados ---- */
+let chatDoc=[];
+function saludoDoc(){
+  const hs=hallazgos(), n=sesiones().length, altas=hs.filter(h=>h.s==="alta").length;
+  if(!n) return `Todavía no hay datos del curso. Cuando los estudiantes empiecen a responder podré decirte qué está pasando con cada pregunta. Para verlo funcionando ahora, usa “Simular el curso completo” en la barra de arriba.`;
+  return `Tengo los datos de <b>${n}</b> estudiante(s) sobre ${DB.preguntas.length} preguntas. Hay <b>${hs.length}</b> hallazgos, ${altas} de atención alta. Pregúntame por una pregunta concreta, por lo que dicen los comentarios, o por dónde empezar.`;
+}
+function responderDoc(txt){
+  const t=(txt||"").trim(), b=t.toLowerCase();
+  const hs=hallazgos(), N=sesiones().length;
+  if(!N) return `Sin datos todavía. Usa “Simular el curso completo” en la barra de arriba y vuelve a preguntarme.`;
+
+  // ¿por dónde empezar?
+  if(/primero|prioridad|empez|empiez|empec|empiec|urgente|m[aá]s grave|qu[eé] reviso|qu[eé] hago|por d[oó]nde/i.test(b)){
+    const top=hs.filter(h=>h.s==="alta").slice(0,3);
+    if(!top.length) return `No hay nada de atención alta. Los ${hs.length} hallazgos son de segundo orden: puedes revisarlos con calma en la lista de abajo.`;
+    return `Yo empezaría por esto, en este orden:<ul>${top.map(h=>
+      `<li><b>${esc(h.t)}</b>${h.q!=="—"?" (pregunta "+h.q+")":""} — ${esc(h.a)}</li>`).join("")}</ul>`;
+  }
+  // una pregunta concreta
+  const mq=b.match(/pregunta\s*(\d+)|\bp\s*(\d+)\b|\bn[uú]mero\s*(\d+)/);
+  if(mq){
+    const i=parseInt(mq[1]||mq[2]||mq[3],10)-1, q=DB.preguntas[i];
+    if(!q) return `Solo hay ${DB.preguntas.length} preguntas cargadas. Dime un número entre 1 y ${DB.preguntas.length}.`;
+    const st=statsQ(q), ac=pct(st.ok,st.tot);
+    const peor=L.filter(l=>l!==q.clave).map(l=>({l,n:st.dist[l]||0})).sort((a,c)=>c.n-a.n)[0];
+    const ts=temasDe(st.coms).slice(0,2);
+    const hq=hs.filter(h=>h.q===i+1);
+    return `<b>Pregunta ${i+1}</b> (${esc(q.tema)}, clave ${q.clave}).<ul>
+      <li>Acertó el <b>${ac}%</b> de ${st.tot} respuestas.</li>
+      <li>El distractor más elegido fue la <b>${peor.l}</b>, con ${peor.n}.</li>
+      <li>${st.coms.length} comentario(s)${ts.length?": lo que más se repite es "+ts.map(x=>esc(x.n)).join(" y ")+"":"."}</li>
+      ${hq.length?`<li>Hallazgos: ${hq.map(h=>esc(h.t)).join("; ")}.</li>`:`<li>Sin hallazgos automáticos.</li>`}
+    </ul>`;
+  }
+  // temas de los comentarios
+  if(/comentario|dicen|opinan|escrib|qu[eé] dijeron|feedback/i.test(b)){
+    const todos=[]; sesiones().forEach(s=>Object.values(s.ciclos||{}).forEach(c=>{ if(c.com) todos.push({txt:c.com}); }));
+    const ts=temasDe(todos).slice(0,4);
+    if(!ts.length) return `Hay ${todos.length} comentarios pero no caen en ningún patrón que yo reconozca. Toca leerlos.`;
+    return `De los <b>${todos.length}</b> comentarios, esto es lo que más se repite:<ul>${ts.map(x=>
+      `<li><b>${x.hits.length}</b> mencionan ${esc(x.n)} — ${esc(x.accion)}</li>`).join("")}</ul>`;
+  }
+  // un tema específico
+  const tema=TEMAS.find(x=>x.rx.test(b)||b.includes(x.id));
+  if(tema){
+    const todos=[]; sesiones().forEach(s=>DB.preguntas.forEach((q,i)=>{
+      const c=(s.ciclos||{})[q.id]; if(c&&c.com&&tema.rx.test(c.com)) todos.push({q:i+1,cod:s.codigo,txt:c.com}); }));
+    if(!todos.length) return `Nadie ha mencionado eso en los comentarios.`;
+    const porQ={}; todos.forEach(x=>porQ[x.q]=(porQ[x.q]||0)+1);
+    return `<b>${todos.length}</b> comentario(s) mencionan ${esc(tema.n)}, sobre todo en la pregunta ${Object.entries(porQ).sort((a,c)=>c[1]-a[1])[0][0]}.
+      Un ejemplo: <i>“${esc(todos[0].txt.slice(0,180))}…”</i><br>Sugerencia: ${esc(tema.accion)}`;
+  }
+  // el asistente de escritura
+  if(/asistente|chatbot|bot|a\/b|ab\b|sirvi[oó]|escritura/i.test(b)){
+    const d=datosCoach();
+    if(!d.coach.n) return `Todavía nadie ha usado el asistente, así que no hay nada que comparar.`;
+    const dif=d.mControl?Math.round(100*(d.mCoach-d.mControl)/d.mControl):0;
+    return d.mControl
+      ? `Con asistente: <b>${d.mCoach}</b> caracteres de media en ${d.coach.n} comentarios. Sin él: <b>${d.mControl}</b> en ${d.control.n}. Diferencia de <b>${dif>=0?"+":""}${dif}%</b>. Se mostraron ${d.coach.avisos} intervenciones y ${d.coach.edito} veces el estudiante siguió escribiendo después. Ojo: el largo no es calidad, la comprobación real es leer una muestra de cada grupo a ciegas.`
+      : `Todos los estudiantes tuvieron asistente (${d.coach.n} comentarios, ${d.mCoach} caracteres de media), así que no hay grupo de control con qué compararlos. Para eso hay que ponerlo en modo repartido en Rúbrica y ajustes.`;
+  }
+  // participación
+  if(/particip|abandon|cu[aá]ntos|entraron|complet|terminaron|qui[eé]n/i.test(b)){
+    const ss=sesiones(), term=ss.filter(s=>completos(s)>=NQ()).length;
+    const medias=ss.filter(s=>completos(s)>0&&completos(s)<NQ()).length;
+    const porPaso={responder:0,valorar:0,comentar:0};
+    ss.forEach(s=>Object.values(s.ciclos||{}).forEach(c=>{ if(!c.completo&&c.paso!=="listo") porPaso[c.paso]=(porPaso[c.paso]||0)+1; }));
+    const peor=Object.entries(porPaso).sort((a,c)=>c[1]-a[1])[0];
+    return `Entraron <b>${ss.length}</b> de ${CURSO.length}. Completaron todo <b>${term}</b> y quedaron a medias <b>${medias}</b>.
+      Los ciclos incompletos se detienen sobre todo en el paso <b>“${peor[0]}”</b> (${peor[1]} casos).`;
+  }
+  // rúbrica
+  if(/r[uú]brica|criterio|dificultad|claridad|distractor|valoraci[oó]n/i.test(b)){
+    const cr=CRIT().filter(c=>c.tipo!=="categoria");
+    const prom2=cr.map(c=>{
+      const acum=[0,0,0];
+      DB.preguntas.forEach(q=>{ const r=statsQ(q).rub[c.id]||[0,0,0]; r.forEach((v,k)=>acum[k]+=v); });
+      return {n:c.nombre, p:prom(acum)};
+    }).filter(x=>x.p);
+    if(!prom2.length) return `Todavía no hay valoraciones suficientes.`;
+    const bajo=prom2.slice().sort((a,c)=>a.p-c.p)[0];
+    return `Promedios del curso, sobre 3:<ul>${prom2.map(x=>`<li>${esc(x.n)}: <b>${x.p}</b></li>`).join("")}</ul>
+      El más bajo es <b>${esc(bajo.n)}</b>, con ${bajo.p}. “Dificultad” no aparece porque es una categoría, no un puntaje.`;
+  }
+  // exportar
+  if(/export|csv|descarg|archivo|datos crudos|saco|sacar|obtener|bajar|llevarme|analizar/i.test(b))
+    return `En la pestaña Exportar tienes ocho archivos. Para el análisis del piloto los importantes son <b>Ciclos y tiempos</b> (dónde se atasca el flujo) y <b>Bitácora de eventos</b> (el recorrido completo con marcas de tiempo).`;
+  // saludo
+  if(t.length<20 && /^(hola|buenas|hey|qu[eé] tal)/i.test(b))
+    return saludoDoc();
+  // no sé
+  return `Eso no sé responderlo. Puedo con: <b>por dónde empezar</b>, <b>una pregunta concreta</b> (“¿qué pasa con la pregunta 7?”), <b>lo que dicen los comentarios</b>, <b>la participación y los abandonos</b>, <b>los promedios de la rúbrica</b> y <b>si sirvió el asistente</b>.`;
+}
+function enviarDoc(_,txt){
+  const t=(txt||"").trim(); if(!t) return;
+  chatDoc.push({de:"yo",t:t,ts:ahora()});
+  pintarChat("chat-doc",chatDoc);
+  escribiendo("chat-doc",true);
+  setTimeout(()=>{
+    escribiendo("chat-doc",false);
+    chatDoc.push({de:"ia",t:responderDoc(t),ts:ahora()});
+    pintarChat("chat-doc",chatDoc);
+  }, 450+Math.min(800,t.length*7));
+}
+function chatDocHTML(){
+  if(!chatDoc.length) chatDoc=[{de:"ia",t:saludoDoc(),ts:ahora()}];
+  return `<div class="card"><h2>Pregúntale a los datos</h2>
+    <div class="sub">Responde con lo que está calculado en este panel: no inventa cifras, y si no sabe algo lo dice.</div>
+    ${chatHTML({id:"chat-doc", titulo:"Asistente de análisis", msgs:chatDoc, fn:"enviarDoc", arg:"",
+      ph:"Por ejemplo: ¿qué pasa con la pregunta 7?",
+      sug:["¿Por dónde empiezo?","¿Qué pasa con la pregunta 7?","¿Qué dicen los comentarios?","¿Sirvió el asistente?","¿Cuántos abandonaron?"]})}
+  </div>`;
+}
+
+/* --- pestaña Diagnóstico: triangulación conducta / valoración --- */
+function docDiagnostico(){
+  const hs=hallazgos(), N=sesiones().length;
+  const altas=hs.filter(h=>h.s==="alta").length, medias=hs.filter(h=>h.s==="media").length;
+  const cabeza=chatDocHTML()+`<div class="card">
+    <h2>Diagnóstico automático del conjunto</h2>
+    <div class="sub">Cruza lo que los estudiantes <b>hicieron</b> (qué alternativa eligieron, cuánto tardaron) con lo que <b>dijeron</b> (la rúbrica y los comentarios). Los desajustes entre ambos son lo que no se ve leyendo ninguna de las dos cosas por separado.</div>
+    <div class="kpi">
+      <div><b>${N}</b><span>estudiantes con datos</span></div>
+      <div><b>${DB.preguntas.length}</b><span>preguntas analizadas</span></div>
+      <div><b style="color:var(--bad)">${altas}</b><span>hallazgos de atención alta</span></div>
+      <div><b style="color:var(--warn)">${medias}</b><span>hallazgos de atención media</span></div>
+    </div>
+    <div class="aibox" style="margin-top:16px">
+      <div class="t">Cómo leer esto</div>
+      <div style="font-size:13.5px;line-height:1.6">Cada hallazgo es una regla aplicada sobre los datos, no una opinión: al lado va siempre el número que la dispara. Son hipótesis para revisar, no conclusiones. Con ${N} estudiantes, un hallazgo apoyado en tres o cuatro respuestas es una pista, no un resultado.</div>
+      <div class="dis">Análisis automático · no reemplaza la lectura de los comentarios ni el criterio de la docente.</div>
+    </div>
+  </div>`;
+  if(!hs.length) return cabeza+`<div class="card"><h2>Sin hallazgos</h2><div class="muted small">Todavía no hay suficientes datos, o ninguna regla se activó. Usa “Simular 17 estudiantes” en la barra superior para ver esta vista con datos.</div></div>`;
+  const nom={alta:"atención alta",media:"atención media",info:"informativo"};
+  return cabeza+`<div class="card">
+    <h2>Hallazgos <span class="muted small">(${hs.length})</span></h2>
+    ${hs.map(h=>`<div class="find ${h.s}">
+      <div class="fh"><span class="ft">${esc(h.t)}</span>
+        <span><span class="pill ${h.s==="alta"?"bad":(h.s==="media"?"warn":"gray")}">${nom[h.s]}</span>
+        ${h.q!=="—"?'<span class="tag" style="margin-left:5px">P'+h.q+'</span>':""}</span></div>
+      <div class="fd">${h.d}</div>
+      <div class="fa">→ ${esc(h.a)}</div>
+    </div>`).join("")}
+  </div>
+  ${coachResumen()}`;
+}
+
+/* --- efecto medido del coach de escritura (el experimento A/B) --- */
+function vioAsistente(c){ return !!(c && c.coach && c.coach.visto>0); }
+function datosCoach(){
+  const g={coach:{n:0,chars:[],avisos:0,edito:0},control:{n:0,chars:[]}};
+  let sc=0, sn=0;
+  sesiones().forEach(s=>{
+    const cs=Object.values(s.ciclos||{});
+    if(cs.some(vioAsistente)) sc++; else sn++;
+    cs.forEach(c=>{
+      if(!c.completo) return;
+      const k=vioAsistente(c)?"coach":"control";
+      g[k].n++; g[k].chars.push(c.chars);
+      if(k==="coach"){ g.coach.avisos+=c.coach.visto||0; if(c.coach.edito) g.coach.edito++; }
+    });
+  });
+  const media=a=>a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length):0;
+  return {...g, mCoach:media(g.coach.chars), mControl:media(g.control.chars), nCoach:sc, nControl:sn};
+}
+function coachResumen(){
+  const d=datosCoach();
+  if(!d.coach.n && !d.control.n) return "";
+  const dif=d.mControl?Math.round(100*(d.mCoach-d.mControl)/d.mControl):0;
+  return `<div class="card">
+    <h2>Efecto del asistente de escritura</h2>
+    <div class="sub">Los grupos se arman por lo que cada estudiante <b>vio de verdad</b>, no por el grupo previsto. ${
+      DB.config.coach==="on" ? "Ahora mismo el asistente está activado para todo el curso: para comparar contra un control hay que ponerlo en modo repartido, en Rúbrica y ajustes."
+      : DB.config.coach==="off" ? "Ahora mismo está desactivado para todos."
+      : "Ahora mismo está repartido por paridad del código."}</div>
+    <div class="scroll"><table>
+      <tr><th>Grupo</th><th>Estudiantes</th><th>Comentarios completos</th><th>Largo medio</th></tr>
+      <tr><td><b>Con asistente</b></td><td>${d.nCoach}</td><td>${d.coach.n}</td><td><b>${d.mCoach}</b> caracteres</td></tr>
+      <tr><td><b>Sin asistente</b></td><td>${d.nControl}</td><td>${d.control.n}</td><td><b>${d.mControl}</b> caracteres</td></tr>
+    </table></div>
+    <div class="aibox">
+      <div class="t">Lectura</div>
+      <div style="font-size:13.5px;line-height:1.6">
+        ${d.mCoach&&d.mControl
+          ? `Los comentarios del grupo con asistente son un <b>${dif>=0?"+":""}${dif}%</b> ${dif>=0?"más largos":"más cortos"} que los del grupo de control.
+             Se mostraron <b>${d.coach.avisos}</b> sugerencias y en <b>${d.coach.edito}</b> casos el estudiante siguió escribiendo después de verla.
+             ${Math.abs(dif)<10?"La diferencia es pequeña: con este número de estudiantes no permite concluir nada por sí sola.":"Conviene comprobar si el texto añadido aporta contenido o solo relleno: el largo no es calidad."}`
+          : "Todavía no hay comentarios completos en ambos grupos para comparar."}
+      </div>
+      <div class="dis">El largo es un indicador grueso. La comprobación real es leer una muestra de cada grupo a ciegas.</div>
+    </div>
+  </div>`;
+}
+
+/* ---- 3. chat por pregunta en el panel docente ---- */
+let chatQ={};
+function saludoQ(i){
+  const q=DB.preguntas[i], st=statsQ(q);
+  if(!st.tot) return `Todavía no hay respuestas para esta pregunta.`;
+  const ac=pct(st.ok,st.tot);
+  const peor=L.filter(l=>l!==q.clave).map(l=>({l,n:st.dist[l]||0})).sort((a,c)=>c.n-a.n)[0];
+  const hq=hallazgos().filter(h=>h.q===i+1);
+  return hq.length
+    ? `Acertó el <b>${ac}%</b> de ${st.tot}. Lo que me llama la atención aquí: <b>${esc(hq[0].t.toLowerCase())}</b>. Pregúntame por los comentarios, por los distractores o por qué cambiaría.`
+    : `Acertó el <b>${ac}%</b> de ${st.tot} y el distractor más elegido fue la <b>${peor.l}</b> con ${peor.n}. Nada me parece alarmante. Pregúntame por los comentarios o por los distractores.`;
+}
+function responderQ(i,txt){
+  const b=(txt||"").trim().toLowerCase();
+  const q=DB.preguntas[i], st=statsQ(q);
+  if(!st.tot) return `Sin respuestas para esta pregunta todavía.`;
+  const ac=pct(st.ok,st.tot);
+  const inc=L.filter(l=>l!==q.clave).map(l=>({l,n:st.dist[l]||0})).sort((a,c)=>c.n-a.n);
+  const hq=hallazgos().filter(h=>h.q===i+1);
+  const P=cr=>{const a=st.rub[cr]||[0,0,0]; return prom(a);};
+
+  if(/cambi|qu[eé] hago|mejorar|mejora|corregir|arreglar|reescrib|recomien|sugerencia|qu[eé] har[ií]a/i.test(b)){
+    if(hq.length) return `Por orden:<ul>${hq.map(h=>`<li><b>${esc(h.t)}</b> — ${esc(h.a)}</li>`).join("")}</ul>`;
+    const muertos=inc.filter(x=>x.n===0);
+    if(muertos.length) return `Nada urgente, pero ${muertos.map(x=>"la <b>"+x.l+"</b>").join(" y ")} no la eligió nadie: ese distractor no está aportando información y se puede reemplazar.`;
+    return `No veo nada que corregir: el acierto es del ${ac}%, los tres distractores atraen a alguien y la valoración no muestra desajustes.`;
+  }
+  if(/comentario|dicen|opinan|escrib|feedback/i.test(b)){
+    const ts=temasDe(st.coms).slice(0,3);
+    if(!st.coms.length) return `Nadie ha comentado esta pregunta todavía.`;
+    if(!ts.length) return `Hay ${st.coms.length} comentarios pero sin patrón reconocible. El más largo es de ${st.coms.slice().sort((a,c)=>c.chars-a.chars)[0].cod}.`;
+    const ej=ts[0].hits.slice().sort((a,c)=>(c.txt||"").length-(a.txt||"").length)[0];
+    return `De ${st.coms.length} comentarios:<ul>${ts.map(t=>`<li><b>${t.hits.length}</b> mencionan ${esc(t.n)}</li>`).join("")}</ul>
+      Uno textual: <i>“${esc((ej.txt||"").slice(0,200))}…”</i>`;
+  }
+  if(/distractor|alternativa|incorrect|eligieron|marc[oó]|opci[oó]n/i.test(b))
+    return `Con clave <b>${q.clave}</b> y ${st.tot} respuestas:<ul>${
+      L.map(l=>`<li><b>${l}</b>${l===q.clave?" (clave)":""}: ${st.dist[l]||0} · ${pct(st.dist[l]||0,st.tot)}%</li>`).join("")}</ul>
+      ${inc[0].n===0?"Ninguna incorrecta atrajo a nadie.":`La más elegida de las incorrectas es la <b>${inc[0].l}</b>.`}`;
+  if(/dif[ií]cil|dificultad|f[aá]cil|cuesta/i.test(b)){
+    const dif=st.rub.dificultad||[0,0,0], m=moda(dif);
+    const et=["muy fácil","adecuada","muy difícil"][(m||2)-1];
+    return `El curso la clasificó mayoritariamente como <b>${et}</b> (${dif.join(" / ")} entre los tres niveles) y acertó el <b>${ac}%</b>.
+      ${ac>=70&&m===3?"Percibida como difícil pero resuelta bien: el peso está en el cálculo, no en el concepto.":""}
+      ${ac<=40&&m===1?"La vieron fácil y fallaron: suele indicar una lectura equivocada del enunciado.":""}
+      Recuerda que la dificultad es una categoría, no un puntaje: no se promedia.`;
+  }
+  if(/claridad|enunciado|se entend|redacc/i.test(b))
+    return `Claridad promedio: <b>${P("claridad")||"—"}</b> de 3. ${P("claridad")&&+P("claridad")<2?"Está por debajo del umbral: conviene reescribir el enunciado.":"Sin problemas de redacción según el curso."}`;
+  if(/soluci[oó]n|explicaci[oó]n|comentada/i.test(b))
+    return `Utilidad de la solución comentada: <b>${P("solucion")||"—"}</b> de 3.
+      ${P("solucion")&&+P("solucion")<2?"Baja. Si además el acierto es de "+ac+"%, es la primera que ampliaría.":"Está cumpliendo su función."}`;
+  if(/qui[eé]n|c[oó]digo|estudiante/i.test(b))
+    return `No trabajo con nombres: los comentarios llegan solo con el código. En esta pregunta comentaron ${st.coms.length} estudiante(s): ${st.coms.map(c=>c.cod).join(", ")||"ninguno"}.`;
+  if(/resumen|c[oó]mo va|qu[eé] tal|general/i.test(b)) return saludoQ(i);
+  return `Sobre esta pregunta puedo con: <b>los comentarios</b>, <b>los distractores</b>, <b>la dificultad</b>, <b>la claridad</b>, <b>la solución comentada</b> y <b>qué cambiaría</b>.`;
+}
+function enviarQ(i,txt){
+  const t=(txt||"").trim(); if(!t) return;
+  chatQ[i]=chatQ[i]||[];
+  chatQ[i].push({de:"yo",t:t,ts:ahora()});
+  pintarChat("chat-q"+i,chatQ[i]);
+  escribiendo("chat-q"+i,true);
+  setTimeout(()=>{ escribiendo("chat-q"+i,false);
+    chatQ[i].push({de:"ia",t:responderQ(i,t),ts:ahora()});
+    pintarChat("chat-q"+i,chatQ[i]); }, 420+Math.min(700,t.length*6));
+}
+function chatQHTML(i){
+  if(!chatQ[i]||!chatQ[i].length) chatQ[i]=[{de:"ia",t:saludoQ(i),ts:ahora()}];
+  return chatHTML({id:"chat-q"+i, titulo:"Asistente · pregunta "+(i+1), msgs:chatQ[i], fn:"enviarQ", arg:i,
+    ph:"Pregunta sobre este ítem…",
+    sug:["¿Qué cambiarías?","¿Qué dicen los comentarios?","¿Cómo funcionaron los distractores?"]});
+}
+
+function docResultados(){
+  if(!DB.preguntas.length) return `<div class="card"><h2>Sin preguntas cargadas</h2><div class="sub">Ve a la pestaña Preguntas para cargarlas.</div></div>`;
+  return DB.preguntas.map((q,i)=>{
+    const st=statsQ(q);
+    const barras=L.map(l=>{
+      const n=st.dist[l]||0;
+      return `<div class="bar ${l===q.clave?"right":""}"><b>${l}</b>
+        <div class="track"><i style="width:${pct(n,st.tot||1)}%"></i></div>
+        <span>${n} · ${pct(n,st.tot||1)}%</span></div>`;
+    }).join("");
+    const rubHTML=CRIT().map(cr=>{
+      const a=st.rub[cr.id], n=a.reduce((x,y)=>x+y,0);
+      const p=prom(a);
+      return `<tr><td>${esc(cr.nombre)}${cr.tipo==="categoria"?' <span class="pill gray">categoría</span>':""}</td>
+        ${a.map((v,k)=>`<td>${v} <span class="muted small">${pct(v,n||1)}%</span></td>`).join("")}
+        <td>${cr.tipo==="categoria"?'<span class="muted">—</span>':(p||"—")}</td></tr>`;
+    }).join("");
+    return `<div class="card">
+      <div class="row" style="justify-content:space-between"><h2 style="margin:0">Pregunta ${i+1}</h2>
+        <span><span class="tag">${esc(q.tema)}</span><span class="pill ${st.tot&&pct(st.ok,st.tot)>=60?"ok":"warn"}">${st.tot?pct(st.ok,st.tot)+"% acierto":"sin datos"}</span></span></div>
+      <div class="stem" style="font-size:15px">${md(q.stem)}</div>
+      <h3>Distribución de respuestas <span class="muted small">(${st.tot} respuestas · clave ${q.clave})</span></h3>
+      ${barras}
+      <h3>Valoración de la pregunta por los estudiantes</h3>
+      <div class="scroll"><table>
+        <tr><th>Criterio</th><th>Nivel 1</th><th>Nivel 2</th><th>Nivel 3</th><th>Promedio</th></tr>${rubHTML}
+      </table></div>
+      <h3>Comentarios recibidos <span class="muted small">(${st.coms.length})</span></h3>
+      ${sintesisHTML(st.coms, sesiones().length)}
+      ${chatQHTML(i)}
+      ${st.coms.length? `<details><summary>Ver los ${st.coms.length} comentarios uno a uno</summary>
+        ${st.coms.map(c=>`<div class="cita-com">
+          <b>${esc(c.cod)}</b> <span class="muted small">${c.chars} caracteres</span><br>${esc(c.txt)}</div>`).join("")}</details>`
+        : '<div class="muted small">Todavía no hay comentarios.</div>'}
+    </div>`;
+  }).join("");
+}
+
+function docGeneral(){
+  const ss=sesiones(), n=ss.length;
+  const conAlgo=ss.filter(s=>Object.keys(s.ciclos||{}).length>0).length;
+  const term=ss.filter(s=>completos(s)>=NQ()).length;
+  const abandono=ss.filter(s=>completos(s)>0&&completos(s)<NQ()).length;
+  const totalCiclos=ss.reduce((a,s)=>a+completos(s),0);
+  const porPaso={responder:0,valorar:0,comentar:0};
+  ss.forEach(s=>Object.values(s.ciclos||{}).forEach(c=>{ if(!c.completo&&c.paso!=="listo") porPaso[c.paso]=(porPaso[c.paso]||0)+1; }));
+  const filas=ss.sort((a,b)=>a.codigo.localeCompare(b.codigo)).map(s=>{
+    const cs=Object.values(s.ciclos||{}), comp=completos(s);
+    const inc=cs.find(c=>!c.completo);
+    const dur=cs.filter(c=>c.completo).map(c=>seg(c.ini,c.tCom)).filter(x=>x!=="");
+    const med=dur.length?Math.round(dur.reduce((a,b)=>a+b,0)/dur.length):"";
+    return `<tr><td><b>${esc(s.codigo)}</b></td>
+      <td>${DB.config.coach==="on"?'<span class="pill pill-ia">asistente</span>'
+           :(DB.config.coach==="off"?'<span class="pill gray">sin asistente</span>'
+           :(s.grupo==="coach"?'<span class="pill pill-ia">asistente</span>':'<span class="pill gray">control</span>'))}</td>
+      <td>${comp} / ${NQ()}</td>
+      <td>${s.aperturas}</td>
+      <td>${inc?'<span class="pill warn">'+esc(inc.paso)+'</span>':(comp>=NQ()?'<span class="pill ok">completo</span>':'<span class="pill gray">no inició</span>')}</td>
+      <td>${med?med+" s":"—"}</td>
+      <td>${s.encuesta?'<span class="pill ok">sí</span>':'<span class="pill gray">no</span>'}</td>
+      <td class="muted small">${hhmm(s.ultima)}</td></tr>`;
+  }).join("");
+  return `<div class="card">
+    <h2>Vista general del piloto</h2>
+    <div class="sub">${CURSO.length} estudiantes en la lista del curso. Esta vista responde las tres preguntas del test: cuántos entraron, cuántos completaron y dónde se cayeron.</div>
+    <div class="kpi">
+      <div><b>${n} <span class="muted" style="font-size:14px">/ ${CURSO.length}</span></b><span>códigos que entraron</span></div>
+      <div><b>${term}</b><span>completaron las ${NQ()}</span></div>
+      <div><b>${abandono}</b><span>quedaron a medias</span></div>
+      <div><b>${totalCiclos}</b><span>ciclos completos en total</span></div>
+    </div>
+    <h3>¿En qué paso se detienen los ciclos incompletos?</h3>
+    ${["responder","valorar","comentar"].map(p=>{
+      const v=porPaso[p]||0, mx=Math.max(1,...Object.values(porPaso));
+      return `<div class="bar"><b style="font-size:11px">${p[0].toUpperCase()}</b><div class="track"><i style="width:${pct(v,mx)}%"></i></div><span>${v}</span></div>
+        <div class="muted small" style="margin:-4px 0 8px 35px">detenidos en “${p}”</div>`;
+    }).join("")}
+    <h3>Por estudiante</h3>
+    <div class="scroll"><table>
+      <tr><th>Código</th><th>Grupo</th><th>Completas</th><th>Sesiones</th><th>Estado</th><th>Tiempo medio por ciclo</th><th>Encuesta</th><th>Última actividad</th></tr>
+      ${filas||'<tr><td colspan="8" class="muted">Sin datos todavía.</td></tr>'}
+    </table></div>
+  </div>
+  ${encuestaResumen()}`;
+}
+function encuestaResumen(){
+  const ss=sesiones().filter(s=>s.encuesta);
+  if(!ss.length) return `<div class="card"><h2>Encuesta de salida</h2><div class="muted small">Nadie la ha respondido todavía.</div></div>`;
+  return `<div class="card"><h2>Encuesta de salida <span class="muted small">(${ss.length} respuestas)</span></h2>
+    ${ENCUESTA.map(p=>{
+      if(p.tipo==="likert"){
+        const vals=ss.map(s=>s.encuesta[p.id]).filter(Boolean);
+        const m=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2):"—";
+        const conteo=[1,2,3,4,5].map(n=>vals.filter(v=>v===n).length);
+        return `<h3>${esc(p.t)} <span class="muted small">promedio ${m}</span></h3>
+          ${conteo.map((v,i)=>`<div class="bar"><b>${i+1}</b><div class="track"><i style="width:${pct(v,vals.length||1)}%"></i></div><span>${v}</span></div>`).join("")}`;
+      }
+      const txt=ss.map(s=>({c:s.codigo,t:s.encuesta[p.id]})).filter(x=>x.t&&x.t.trim());
+      return `<h3>${esc(p.t)}</h3>${txt.length?txt.map(x=>`<div class="cita-com"><b>${esc(x.c)}</b> ${esc(x.t)}</div>`).join(""):'<div class="muted small">Sin respuestas escritas.</div>'}`;
+    }).join("")}</div>`;
+}
+
+function docComentarios(){
+  const filas=[];
+  sesiones().forEach(s=>DB.preguntas.forEach((q,i)=>{
+    const c=(s.ciclos||{})[q.id]; if(c&&c.com&&c.com.trim())
+      filas.push({cod:s.codigo,q:i+1,qid:q.id,txt:c.com,chars:c.chars,ts:c.tCom,ok:c.completo});
+  }));
+  filas.sort((a,b)=>b.chars-a.chars);
+  const min=MIN();
+  const glob=temasDe(filas).slice(0,6);
+  return `<div class="card">
+    <h2>Qué está diciendo el curso <span class="muted small">(${filas.length} comentarios)</span></h2>
+    <div class="sub">Agrupación automática de todos los comentarios del conjunto, sin separar por pregunta. Sirve para ver qué se repite transversalmente.</div>
+    ${glob.length?`<div class="aibox"><div class="t">Temas transversales</div><ul>
+      ${glob.map(t=>`<li><b>${t.hits.length}</b> comentario(s) mencionan ${esc(t.n)} <span class="muted small">— ${esc(t.accion)}</span></li>`).join("")}
+    </ul><div class="dis">Reglas sobre el texto, no un modelo. Un comentario puede caer en varios temas o en ninguno.</div></div>`
+     :'<div class="muted small">Sin patrones reconocibles todavía.</div>'}
+  </div>
+  <div class="card">
+    <h2>Todos los comentarios <span class="muted small">(${filas.length})</span></h2>
+    <div class="sub">Ordenados de más largo a más corto. El largo no es calidad, pero sirve para encontrar rápido los que valen la pena leer. Mínimo exigido: ${min} caracteres.</div>
+    <div class="scroll"><table>
+      <tr><th>Código</th><th>Preg.</th><th>Caracteres</th><th>Comentario</th></tr>
+      ${filas.map(f=>`<tr><td><b>${esc(f.cod)}</b></td><td>${f.q}</td>
+        <td>${f.chars} ${f.chars>=2*min?'<span class="pill ok">extenso</span>':""}</td>
+        <td style="min-width:280px">${esc(f.txt)}</td></tr>`).join("")||'<tr><td colspan="4" class="muted">Sin comentarios.</td></tr>'}
+    </table></div>
+  </div>`;
+}
+
+/* --- carga de preguntas --- */
+function docPreguntas(){
+  const claves={}; DB.preguntas.forEach(q=>claves[q.clave]=(claves[q.clave]||0)+1);
+  const desbalance=Object.values(claves).some(v=>v>DB.preguntas.length/2);
+  return `<div class="grid g2">
+  <div class="card">
+    <h2>Preguntas cargadas <span class="muted small">(${DB.preguntas.length})</span></h2>
+    <div class="sub">Se cargan una sola vez. Los estudiantes no pueden crear ni editar preguntas.</div>
+    ${desbalance?'<div class="pill warn" style="display:block;padding:9px 12px;margin-bottom:10px">Aviso: las claves correctas están concentradas ('+Object.entries(claves).map(([k,v])=>k+"×"+v).join(", ")+'). Conviene repartirlas antes del piloto.</div>':""}
+    <div class="scroll"><table>
+      <tr><th>#</th><th>Tema</th><th>Clave</th><th>Enunciado</th><th></th></tr>
+      ${DB.preguntas.map((q,i)=>`<tr><td>${i+1}</td><td>${esc(q.tema)}</td><td><b>${q.clave}</b></td>
+        <td style="max-width:340px">${esc(q.stem.replace(/\$[^$]*\$/g," [fórmula] ").slice(0,150))}…</td>
+        <td><button class="btn sec sm" onclick="borrarPregunta('${q.id}')">Quitar</button></td></tr>`).join("")}
+    </table></div>
+  </div>
+  <div class="card">
+    <h2>Agregar una pregunta</h2>
+    <div class="sub">Notación matemática entre signos <code class="k">$</code> (en línea) o <code class="k">$$</code> (en bloque). Por ejemplo <code class="k">$\\det(A)=0$</code>.</div>
+    <label>Tema</label><input type="text" id="np-tema" placeholder="Determinantes">
+    <label>Resultado de aprendizaje</label><input type="text" id="np-ra" placeholder="Calcular determinantes de orden 3">
+    <label>Enunciado</label><textarea id="np-stem" style="min-height:80px"></textarea>
+    ${L.map(l=>`<label>Alternativa ${l}</label><input type="text" id="np-${l}">`).join("")}
+    <label>Clave correcta</label>
+    <select id="np-clave">${L.map(l=>`<option>${l}</option>`).join("")}</select>
+    <label>Solución comentada</label><textarea id="np-sol" style="min-height:80px"></textarea>
+    <button class="btn" style="margin-top:12px" onclick="agregarPregunta()">Agregar</button>
+    <hr>
+    <h3>O importar un archivo</h3>
+    <div class="sub">CSV con columnas <code class="k">tema, ra, enunciado, A, B, C, D, clave, solucion</code>, o JSON con esos mismos campos.</div>
+    <input type="file" id="np-file" accept=".csv,.json,.txt" onchange="importar(this)" style="padding:8px 0;border:0">
+    <div class="note">La importación agrega preguntas; no borra las existentes.</div>
+  </div></div>`;
+}
+function borrarPregunta(id){
+  if(!confirm("¿Quitar esta pregunta del conjunto?")) return;
+  DB.preguntas=DB.preguntas.filter(q=>q.id!==id); guardar(); render(); toast("Pregunta quitada");
+}
+function agregarPregunta(){
+  const g=id=>($("#"+id)?$("#"+id).value.trim():"");
+  const stem=g("np-stem"); if(!stem){ toast("Falta el enunciado"); return; }
+  DB.preguntas.push({id:"q"+(ahora()%1000000), tema:g("np-tema")||"Sin tema", ra:g("np-ra"),
+    clave:g("np-clave")||"A", stem:stem, alts:L.map(l=>g("np-"+l)), sol:g("np-sol")});
+  guardar(); render(); toast("Pregunta agregada");
+}
+function importar(input){
+  const f=input.files&&input.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=e=>{
+    const txt=e.target.result; let filas=[];
+    try{
+      if(/^\s*[\[{]/.test(txt)){ const j=JSON.parse(txt); filas=Array.isArray(j)?j:(j.preguntas||[]); }
+      else filas=parseCSV(txt);
+      let n=0;
+      filas.forEach(o=>{
+        const stem=o.enunciado||o.stem; if(!stem) return;
+        DB.preguntas.push({id:"q"+(ahora()%1000000)+"_"+(n++), tema:o.tema||"Importada", ra:o.ra||"",
+          clave:(o.clave||"A").toUpperCase(), stem:stem, alts:[o.A,o.B,o.C,o.D].map(x=>x||""), sol:o.solucion||o.sol||""});
+      });
+      guardar(); render(); toast(n+" pregunta(s) importada(s)");
+    }catch(err){ toast("No se pudo leer el archivo: "+err.message); }
+  };
+  r.readAsText(f,"utf-8");
+}
+function parseCSV(txt){
+  const lines=txt.replace(/\r/g,"").split("\n").filter(l=>l.trim());
+  const cut=l=>{const o=[];let cur="",q=false;for(let i=0;i<l.length;i++){const ch=l[i];
+    if(ch==='"'){ if(q&&l[i+1]==='"'){cur+='"';i++} else q=!q; }
+    else if(ch===","&&!q){o.push(cur);cur=""} else cur+=ch;} o.push(cur); return o.map(s=>s.trim())};
+  const head=cut(lines[0]).map(h=>h.toLowerCase());
+  return lines.slice(1).map(l=>{const c=cut(l),o={};head.forEach((h,i)=>{
+    const k={"a":"A","b":"B","c":"C","d":"D"}[h]||h; o[k]=c[i]||""}); return o});
+}
+
+/* --- rúbrica y ajustes --- */
+function docRubrica(){
+  return `<div class="grid g2">
+  <div class="card">
+    <h2>Criterios de valoración</h2>
+    <div class="sub">Estos son los descriptores que ve el estudiante. Puedes reescribirlos antes del piloto. “Dificultad” está marcada como categoría: no se promedia ni se muestra como puntaje.</div>
+    ${CRIT().map((cr,i)=>`
+      <div class="crit ${cr.tipo==="categoria"?"cat":""}">
+        <label style="margin:0">Criterio ${i+1}</label>
+        <input type="text" value="${esc(cr.nombre)}" onchange="editCrit(${i},'nombre',this.value)">
+        <label>Ayuda breve</label>
+        <input type="text" value="${esc(cr.ayuda||"")}" onchange="editCrit(${i},'ayuda',this.value)">
+        <div class="levels" style="margin-top:10px">
+          ${cr.niveles.map((nv,k)=>`<div><small class="muted">Nivel ${k+1}</small>
+            <input type="text" value="${esc(nv)}" onchange="editNivel(${i},${k},this.value)"></div>`).join("")}
+        </div>
+        <label style="margin-top:10px"><input type="checkbox" style="width:auto;margin-right:6px" ${cr.tipo==="categoria"?"checked":""}
+          onchange="editCrit(${i},'tipo',this.checked?'categoria':'escala')"> Tratar como categoría, no como puntaje</label>
+      </div>`).join("")}
+  </div>
+  <div class="card">
+    <h2>Ajustes del piloto</h2>
+    <label>Mínimo de caracteres del comentario</label>
+    <input type="number" id="cfg-min" value="${MIN()}" min="0" max="600" onchange="DB.config.minChars=+this.value;guardar();toast('Mínimo actualizado')">
+    <div class="note">120 es el valor sugerido en el brief: bajo produce comentarios vacíos, alto produce abandono.</div>
+    <label>Consigna del comentario</label>
+    <textarea style="min-height:110px" onchange="DB.config.consigna=this.value;guardar();toast('Consigna actualizada')">${esc(DB.config.consigna)}</textarea>
+    <hr>
+    <h3>Códigos del curso <span class="muted small">(${CURSO.length} estudiantes)</span></h3>
+    <div class="sub">El nombre solo vive en esta tabla y en la pantalla de inicio. No se guarda junto a ninguna respuesta, valoración ni comentario: todo lo que se exporta lleva únicamente el código.</div>
+    <div class="scroll" style="max-height:260px;overflow-y:auto"><table>
+      <tr><th>Código</th><th>Estudiante</th><th>Grupo A/B</th><th>Estado</th></tr>
+      ${CURSO.map((n,i)=>{const c=codigoDe(i), ss=DB.sesiones[c];
+        return `<tr><td><b>${c}</b></td><td>${esc(n)}</td>
+          <td>${grupoDe(c)==="coach"?'<span class="pill pill-ia">asistente</span>':'<span class="pill gray">control</span>'}</td>
+          <td>${ss?(completos(ss)+" / "+NQ()):'<span class="muted">no ha entrado</span>'}</td></tr>`;}).join("")}
+    </table></div>
+    <button class="btn sec sm" style="margin-top:10px" onclick="csvCodigos()">Descargar códigos en CSV</button>
+    <hr>
+    <h3>Asistente de escritura (IA simulada)</h3>
+    <div class="sub">Aparece mientras el estudiante escribe y le pide precisar. Nunca bloquea el envío. Repartirlo por paridad del código permite comparar con un grupo de control sin perder la mitad de la muestra.</div>
+    <select onchange="DB.config.coach=this.value;guardar();render();toast('Asistente: '+this.value)">
+      <option value="on" ${DB.config.coach==="on"?"selected":""}>Activado para todo el curso</option>
+      <option value="ab" ${DB.config.coach==="ab"?"selected":""}>Repartido A/B — códigos impares lo ven, pares no</option>
+      <option value="off" ${DB.config.coach==="off"?"selected":""}>Desactivado — flujo del brief original</option>
+    </select>
+    <div class="note">Este ajuste manda de inmediato sobre todas las sesiones, incluidas las ya empezadas. Con “Repartido A/B” el grupo se fija por la paridad del código y permite comparar contra un control.</div>
+    <hr>
+    <h3>Decisiones de diseño aplicadas</h3>
+    <table>
+      <tr><td>Visibilidad de los comentarios</td><td><b>Solo la docente</b></td></tr>
+      <tr><td>Ranking entre compañeros</td><td><b>No hay</b></td></tr>
+      <tr><td>Preguntas por estudiante</td><td><b>Todas (${NQ()})</b></td></tr>
+      <tr><td>Recompensa</td><td><b>Solo por ciclo completo</b></td></tr>
+      <tr><td>IA en la aplicación</td><td><b>Simulada</b> — se aparta de la sección 10 del brief</td></tr>
+    </table>
+    <div class="note" style="border-left:3px solid var(--ia);padding-left:9px">El brief dejaba la IA fuera de alcance. Aquí hay tres usos, ninguno de ellos evalúa al estudiante: el asistente de escritura (repartido A/B), la síntesis de comentarios y el diagnóstico. Los dos últimos son de solo lectura para la docente y no alteran ningún dato del piloto. Si se usa el asistente con estudiantes, corresponde decirles al final que estaba simulado.</div>
+    <div class="note">Las estrellas e insignias no dependen de acertar ni de valorar alto: solo de completar responder + valorar + comentar.</div>
+  </div></div>`;
+}
+function editCrit(i,campo,v){ CRIT()[i][campo]=v; guardar(); if(campo==="tipo")render(); }
+function editNivel(i,k,v){ CRIT()[i].niveles[k]=v; guardar(); }
+
+/* --- telemetría --- */
+function docTelemetria(){
+  const evs=DB.eventos.slice(-400).reverse();
+  const tiempos={responder:[],valorar:[],comentar:[]};
+  sesiones().forEach(s=>Object.values(s.ciclos||{}).forEach(c=>{
+    if(c.tResp) tiempos.responder.push((c.tResp-c.ini)/1000);
+    if(c.tRub&&c.tResp) tiempos.valorar.push((c.tRub-c.tResp)/1000);
+    if(c.tCom&&c.tRub) tiempos.comentar.push((c.tCom-c.tRub)/1000);
+  }));
+  const med=a=>{ if(!a.length) return "—"; const s=[...a].sort((x,y)=>x-y); return Math.round(s[Math.floor(s.length/2)])+" s"; };
+  const chars=[]; sesiones().forEach(s=>Object.values(s.ciclos||{}).forEach(c=>{ if(c.completo) chars.push(c.chars); }));
+  const reanud=sesiones().reduce((a,s)=>a+(s.aperturas-1),0);
+  return `<div class="card">
+    <h2>Datos del test de usabilidad</h2>
+    <div class="sub">Esto es lo que el brief pide registrar: tiempo por paso, punto de abandono, largo de los comentarios y sesiones retomadas.</div>
+    <div class="kpi">
+      <div><b>${med(tiempos.responder)}</b><span>mediana para responder</span></div>
+      <div><b>${med(tiempos.valorar)}</b><span>mediana para valorar</span></div>
+      <div><b>${med(tiempos.comentar)}</b><span>mediana para comentar</span></div>
+      <div><b>${reanud}</b><span>sesiones retomadas</span></div>
+    </div>
+    <h3>Asistente de escritura</h3>
+    ${(()=>{const d=datosCoach();return `<div class="scroll"><table>
+      <tr><th>Grupo</th><th>Estudiantes</th><th>Comentarios</th><th>Largo medio</th><th>Sugerencias mostradas</th><th>Siguió escribiendo tras el aviso</th></tr>
+      <tr><td>Con asistente</td><td>${d.nCoach}</td><td>${d.coach.n}</td><td>${d.mCoach}</td><td>${d.coach.avisos}</td><td>${d.coach.edito}</td></tr>
+      <tr><td>Control</td><td>${d.nControl}</td><td>${d.control.n}</td><td>${d.mControl}</td><td>—</td><td>—</td></tr>
+    </table></div>`})()}
+    <h3>Largo de los comentarios completados</h3>
+    <p class="muted small">${chars.length?`${chars.length} comentarios · mínimo ${Math.min(...chars)} · mediana ${med(chars).replace(" s","")} · máximo ${Math.max(...chars)} caracteres`:"Sin datos."}</p>
+    <h3>Bitácora de eventos <span class="muted small">(últimos ${evs.length})</span></h3>
+    <div class="scroll" style="max-height:460px;overflow-y:auto"><table>
+      <tr><th>Hora</th><th>Código</th><th>Evento</th><th>Pregunta</th><th>Paso</th><th>Detalle</th></tr>
+      ${evs.map(e=>`<tr><td class="muted small">${hhmm(e.ts)}</td><td>${esc(e.cod)}</td><td>${esc(e.tipo)}</td>
+        <td>${esc(e.q)}</td><td>${esc(e.paso)}</td><td class="muted small">${esc(e.extra)}</td></tr>`).join("")
+        ||'<tr><td colspan="6" class="muted">Sin eventos.</td></tr>'}
+    </table></div>
+  </div>`;
+}
+
+/* --- exportación --- */
+function docExportar(){
+  return `<div class="card">
+    <h2>Exportar a CSV</h2>
+    <div class="sub">El análisis del piloto se hace fuera de la plataforma. Cada archivo se descarga con codificación UTF-8 y separador coma.</div>
+    <div class="row" style="gap:9px">
+      <button class="btn" onclick="csvRespuestas()">Respuestas</button>
+      <button class="btn" onclick="csvValoraciones()">Valoraciones</button>
+      <button class="btn" onclick="csvComentarios()">Comentarios</button>
+      <button class="btn" onclick="csvCiclos()">Ciclos y tiempos</button>
+      <button class="btn" onclick="csvEventos()">Bitácora de eventos</button>
+      <button class="btn" onclick="csvEncuesta()">Encuesta de salida</button>
+      <button class="btn" onclick="csvCoach()">Asistente de escritura</button>
+      <button class="btn" onclick="csvHallazgos()">Diagnóstico</button>
+      <button class="btn sec" onclick="csvTodo()">Todo (JSON)</button>
+    </div>
+    <hr>
+    <h3>Qué contiene cada archivo</h3>
+    <table>
+      <tr><td><b>Respuestas</b></td><td>Una fila por estudiante y pregunta: alternativa elegida, si acertó, marca de tiempo.</td></tr>
+      <tr><td><b>Valoraciones</b></td><td>Una fila por estudiante y pregunta con el nivel marcado en cada criterio.</td></tr>
+      <tr><td><b>Comentarios</b></td><td>Texto completo y número de caracteres.</td></tr>
+      <tr><td><b>Ciclos y tiempos</b></td><td>Duración de cada paso, si el ciclo quedó incompleto y en qué paso se detuvo.</td></tr>
+      <tr><td><b>Bitácora</b></td><td>Todos los eventos con marca de tiempo, para reconstruir el recorrido.</td></tr>
+      <tr><td><b>Encuesta</b></td><td>Las cinco preguntas de salida por estudiante.</td></tr>
+      <tr><td><b>Asistente</b></td><td>Grupo asignado, sugerencias mostradas, diagnóstico de cada una y si el estudiante siguió escribiendo. Es el archivo del experimento A/B.</td></tr>
+      <tr><td><b>Diagnóstico</b></td><td>Los hallazgos de la triangulación, con su nivel de atención y la acción sugerida.</td></tr>
+    </table>
+  </div>`;
+}
+function dl(nombre,filas){
+  const csv=filas.map(r=>r.map(v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"').join(",")).join("\n");
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8"}));
+  a.download=nombre; document.body.appendChild(a); a.click(); a.remove();
+  toast("Descargando "+nombre);
+}
+function porCiclo(fn){
+  const out=[];
+  sesiones().forEach(s=>DB.preguntas.forEach((q,i)=>{
+    const c=(s.ciclos||{})[q.id]; if(c) out.push(fn(s,q,c,i));
+  }));
+  return out;
+}
+function csvRespuestas(){
+  dl("agora_respuestas.csv",[["codigo","pregunta","id_pregunta","tema","respuesta","clave","correcto","ts_inicio","ts_respuesta","segundos"],
+    ...porCiclo((s,q,c,i)=>[s.codigo,i+1,q.id,q.tema,c.resp||"",q.clave,c.correcto==null?"":(c.correcto?1:0),
+      c.ini?new Date(c.ini).toISOString():"",c.tResp?new Date(c.tResp).toISOString():"",seg(c.ini,c.tResp)])]);
+}
+function csvValoraciones(){
+  const cr=CRIT();
+  dl("agora_valoraciones.csv",[["codigo","pregunta","id_pregunta",...cr.map(c=>c.id),"ts_valoracion"],
+    ...porCiclo((s,q,c,i)=>[s.codigo,i+1,q.id,...cr.map(x=>c.rub&&c.rub[x.id]||""),c.tRub?new Date(c.tRub).toISOString():""])]);
+}
+function csvComentarios(){
+  dl("agora_comentarios.csv",[["codigo","pregunta","id_pregunta","caracteres","comentario","ts_comentario"],
+    ...porCiclo((s,q,c,i)=>[s.codigo,i+1,q.id,c.chars||0,c.com||"",c.tCom?new Date(c.tCom).toISOString():""])]);
+}
+function csvCiclos(){
+  dl("agora_ciclos.csv",[["codigo","pregunta","id_pregunta","completo","paso_alcanzado","s_responder","s_valorar","s_comentar","s_total","aperturas_sesion"],
+    ...porCiclo((s,q,c,i)=>[s.codigo,i+1,q.id,c.completo?1:0,c.paso,
+      seg(c.ini,c.tResp),seg(c.tResp,c.tRub),seg(c.tRub,c.tCom),seg(c.ini,c.tCom),s.aperturas])]);
+}
+function csvEventos(){
+  dl("agora_eventos.csv",[["ts","fecha_hora","codigo","evento","id_pregunta","paso","detalle"],
+    ...DB.eventos.map(e=>[e.ts,new Date(e.ts).toISOString(),e.cod,e.tipo,e.q,e.paso,e.extra])]);
+}
+function csvEncuesta(){
+  dl("agora_encuesta_salida.csv",[["codigo",...ENCUESTA.map(p=>p.id),"ts"],
+    ...sesiones().filter(s=>s.encuesta).map(s=>[s.codigo,...ENCUESTA.map(p=>s.encuesta[p.id]||""),new Date(s.encuesta.ts).toISOString()])]);
+}
+function csvCodigos(){
+  dl("agora_codigos.csv",[["codigo","estudiante","grupo_ab"],
+    ...CURSO.map((n,i)=>[codigoDe(i),n,grupoDe(codigoDe(i))==="coach"?"con asistente":"control"])]);
+}
+function csvCoach(){
+  dl("agora_asistente.csv",[["codigo","grupo","pregunta","id_pregunta","sugerencias","diagnosticos","caracteres_al_aviso","caracteres_final","edito_despues","ocultado"],
+    ...porCiclo((s,q,c,i)=>[s.codigo,s.grupo||"control",i+1,q.id,(c.coach&&c.coach.visto)||0,
+      (c.coach&&c.coach.dx||[]).join(" | "),(c.coach&&c.coach.charsAviso)||"",c.chars||0,
+      (c.coach&&c.coach.edito)?1:0,(c.coach&&c.coach.ocultado)?1:0])]);
+}
+function csvHallazgos(){
+  dl("agora_diagnostico.csv",[["nivel","pregunta","hallazgo","detalle","accion_sugerida"],
+    ...hallazgos().map(h=>[h.s,h.q,h.t,h.d.replace(/<[^>]+>/g,""),h.a])]);
+}
+function csvTodo(){
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(DB,null,2)],{type:"application/json"}));
+  a.download="agora_completo.json"; document.body.appendChild(a); a.click(); a.remove();
+  toast("Descargando agora_completo.json");
+}
+
+/* ====================== MODO DEMOSTRACIÓN (solo maqueta) ====================== */
+const COMENTARIOS_DEMO=[
+ "Dudé entre B y C porque las dos hablaban de la matriz escalonada reducida y no me quedaba claro cuál era el paso final de cada método. La solución lo aclaró, pero el enunciado podría decir explícitamente hasta dónde llega cada procedimiento.",
+ "La alternativa D me pareció muy tentadora porque en clase siempre usamos Gauss-Jordan para calcular inversas, así que asumí que era su único uso. Sería bueno que el enunciado avisara que puede haber más de un uso correcto.",
+ "Me costó leer la matriz en el celular, se sale un poco de la pantalla. La pregunta en sí está clara: apenas vi la fila de ceros supe que había una variable libre, pero confundí una con dos al principio.",
+ "El distractor A funciona muy bien: yo pensé que una fila de ceros significaba inconsistencia y me equivoqué. Después de leer la solución entendí que eso solo pasa cuando el término independiente no es cero. Muy útil.",
+ "Esta la respondí rápido porque el producto de matrices lo tenemos muy practicado. Las alternativas incorrectas se descartan casi sin calcular, con mirar el signo basta. Yo la haría un poco más difícil cambiando los signos de B.",
+ "Me confundí con el orden de las dimensiones y elegí la alternativa D sin verificar si el producto estaba definido. La solución comentada muestra el cálculo entrada por entrada, que es justo lo que necesitaba ver.",
+ "Muy buena pregunta, es de las que obligan a pensar y no a calcular. Tuve que releer dos veces la parte de los pivotes en cada fila. Sugiero separar el enunciado en dos frases porque en una sola es larga.",
+ "La alternativa C es un distractor excelente, casi la elijo. Suena razonable decir que si hay variables libres el sistema no sirve para cualquier b, pero eso mezcla dos ideas distintas y la solución lo explica bien.",
+ "El cálculo del determinante es directo pero yo me equivoqué en el signo del segundo cofactor y llegué a 11 en vez de -9, que justamente es una de las alternativas. Ese distractor está muy bien pensado.",
+ "Encontré la pregunta adecuada en dificultad. Lo único es que la solución podría mostrar también el desarrollo por otra fila para comparar, porque expandir por la primera columna era más rápido en este caso.",
+ "Esta pregunta conecta varias cosas del curso a la vez y eso me gustó. Me hizo dudar la B, porque uno tiende a pensar que tener inversa y resolver para cualquier b son cosas separadas cuando en realidad es lo mismo.",
+ "El enunciado con la flecha hacia la identidad es claro. Yo lo cambiaría solo para agregar que las operaciones son por filas, aunque se entiende del contexto. La solución con la multiplicación por la inversa quedó impecable.",
+ "La relación entre las filas ya venía dada, lo que la hace más fácil de lo que parece. Sin ese dato habría sido bastante más difícil. Igual el distractor B, con lo de la solución trivial, casi me convence.",
+ "Me pareció la mejor pregunta del conjunto porque el error que corrige es uno que yo cometía. La explicación de por qué B está mal debería ir en la solución de todas las preguntas parecidas, ayuda mucho.",
+ "Bastante difícil, pero se puede seguir paso a paso. Tuve que hacer la eliminación en papel para llegar a la fila con 3 menos lambda. Las alternativas están bien construidas porque todas suenan plausibles hasta que calculas.",
+ "Me equivoqué en la B porque asumí que cuando el pivote se anula siempre hay infinitas soluciones y no revisé el término independiente. La solución muestra exactamente ese paso, así que quedó clarísimo el error."
+];
+const COMENTARIOS_MEDIOS=[
+ "Dudé entre B y C porque las dos hablaban de la matriz escalonada reducida y al final no tenía claro dónde termina exactamente cada uno de los dos métodos.",
+ "El distractor D me pareció tentador porque en clase usamos Gauss-Jordan casi siempre para calcular inversas y asumí que ese era su único uso posible.",
+ "Me costó leer la matriz en el celular porque se sale de la pantalla y hay que desplazar. La pregunta en sí se entiende bien y la solución estaba clara.",
+ "Pensé que una fila de ceros significaba que el sistema era inconsistente y por eso me equivoqué. La solución comentada me aclaró bien cuál era el error.",
+ "Se responde rápido porque el producto de matrices lo tenemos muy practicado. Las alternativas incorrectas se descartan casi sin necesidad de calcular nada.",
+ "Me confundí con el orden de las dimensiones y elegí la D sin verificar antes si el producto estaba definido, que era justamente lo primero que había que mirar.",
+ "Buena pregunta porque obliga a pensar y no solo a calcular. Igual tuve que releer dos veces la parte de que hay un pivote en cada una de las tres filas.",
+ "La alternativa C es un distractor bastante bueno y casi la elijo, porque mezcla dos ideas que suenan parecidas pero que en realidad no significan lo mismo."
+];
+const COMENTARIOS_CORTOS=[
+ "La pregunta estaba clara, aunque me demoré un poco en entender el enunciado al principio. La solución explicaba lo necesario.",
+ "Me pareció bien planteada y no tengo mucho más que agregar sobre esta. Las alternativas incorrectas eran razonables en general.",
+ "Un poco difícil pero se puede resolver con calma. Las alternativas estaban bien pensadas y la solución ayudaba a entenderlo.",
+ "No me hizo mucho ruido y la respondí sin problemas mayores. Quizás el enunciado podría ser un poco más corto de lo que es.",
+ "Estuvo buena la pregunta y la explicación también, aunque al principio me costó entender qué era lo que estaban preguntando.",
+ "Me equivoqué pero después entendí por qué con la solución. Las opciones incorrectas eran bastante razonables, la verdad sea dicha."
+];
+const PERFIL=[
+ {p:.65,dif:2,cla:3,dis:2,sol:3},
+ {p:.55,dif:2,cla:1,dis:2,sol:2},
+ {p:.88,dif:1,cla:3,dis:3,sol:3,wrong:"B"},
+ {p:.45,dif:3,cla:2,dis:3,sol:2},
+ {p:.75,dif:3,cla:3,dis:2,sol:3},
+ {p:.60,dif:2,cla:2,dis:2,sol:2},
+ {p:.30,dif:3,cla:2,dis:3,sol:2,wrong:"B"},
+ {p:.35,dif:3,cla:2,dis:2,sol:1}
+];
+const DX_DEMO=["sin_anclaje","alt_sin_causa","sin_causa","sin_mejora"];
+
+function sembrarDemo(){
+  if(!confirm("Esto genera datos simulados de 17 estudiantes para poder mostrar el panel docente. ¿Continuar?")) return;
+  const base=ahora()-1000*60*60*30;
+  let seed=7; const rnd=()=>{seed=(seed*1103515245+12345)%2147483648; return seed/2147483648;};
+  const nivel=t=>{ const r=rnd(); const v = r<.62?t : (r<.81?t-1:t+1); return Math.min(3,Math.max(1,v)); };
+  for(let i=1;i<=CURSO.length;i++){
+    const c=codigoDe(i-1);
+    if(DB.sesiones[c]) continue;
+    const grupo = DB.config.coach==="on" ? "coach" : (DB.config.coach==="off" ? "control" : (i%2===1?"coach":"control"));
+    const meta = i<=10 ? NQ() : (i<=14 ? 2+Math.floor(rnd()*4) : Math.floor(rnd()*2));
+    const s={codigo:c,creada:base+i*60000,ultima:base+i*60000,aperturas:1+(rnd()<.3?1:0),idx:0,
+             ciclos:{},insignias:[],encuesta:null,terminado:false,grupo:grupo};
+    let t=s.creada;
+    DB.preguntas.forEach((q,k)=>{
+      if(k>meta) return;
+      const pf=PERFIL[k]||PERFIL[0];
+      const cic=cicloNuevo(); cic.ini=t;
+      const acierta=rnd()<pf.p;
+      const malas=L.filter(x=>x!==q.clave);
+      cic.resp = acierta ? q.clave
+        : (pf.wrong && rnd()<.75 ? pf.wrong : malas[Math.floor(rnd()*3)]);
+      if(cic.resp===q.clave && !acierta) cic.resp=malas[0];
+      cic.correcto=(cic.resp===q.clave);
+      t += 25000+Math.floor(rnd()*70000); cic.tResp=t;
+      if(k<meta){
+        cic.rub={claridad:nivel(pf.cla), dificultad:nivel(pf.dif), distractores:nivel(pf.dis), solucion:nivel(pf.sol)};
+        t += 12000+Math.floor(rnd()*30000); cic.tRub=t;
+        const banco = grupo==="coach" ? (k<3?COMENTARIOS_DEMO:COMENTARIOS_MEDIOS)
+                                      : (k<2?COMENTARIOS_MEDIOS:COMENTARIOS_CORTOS);
+        const txt=banco[(i*3+k)%banco.length];
+        cic.com=txt; cic.chars=txt.trim().length;
+        if(grupo==="coach"){
+          const avisos=rnd()<.7?1:2, edito=rnd()<.6;
+          cic.coach={visto:avisos, dx:Array.from({length:avisos},(_,z)=>DX_DEMO[Math.floor(rnd()*DX_DEMO.length)]),
+                     charsAviso: Math.max(40, cic.chars-(edito?40+Math.floor(rnd()*60):5)), edito:edito, ocultado:rnd()<.12};
+          DB.eventos.push({ts:t+3000,cod:c,tipo:"coach_sugerencia",q:q.id,paso:"comentar",extra:cic.coach.dx[0]+" · "+cic.coach.charsAviso+" caracteres"});
+        }
+        t += 40000+Math.floor(rnd()*120000); cic.tCom=t;
+        cic.completo=true; cic.paso="listo";
+        DB.eventos.push({ts:cic.tResp,cod:c,tipo:"respuesta_enviada",q:q.id,paso:"responder",extra:cic.resp});
+        if(grupo==="coach") DB.eventos.push({ts:t-1000,cod:c,tipo:"coach_resultado",q:q.id,paso:"comentar",
+          extra:"avisos="+cic.coach.visto+" editó="+(cic.coach.edito?"sí":"no")+" caracteres "+cic.coach.charsAviso+"→"+cic.chars});
+        DB.eventos.push({ts:cic.tCom,cod:c,tipo:"ciclo_completo",q:q.id,paso:"listo",extra:"duracion_s="+seg(cic.ini,cic.tCom)});
+      }else{
+        cic.paso = rnd()<.5 ? "valorar" : "comentar";
+        if(cic.paso==="comentar"){ cic.rub={claridad:nivel(pf.cla),dificultad:nivel(pf.dif),distractores:nivel(pf.dis),solucion:nivel(pf.sol)}; cic.tRub=t+15000; }
+        DB.eventos.push({ts:cic.tResp,cod:c,tipo:"abandono",q:q.id,paso:cic.paso,extra:"sesión sin cerrar el ciclo"});
+      }
+      s.ciclos[q.id]=cic;
+    });
+    s.ultima=t;
+    const n=Object.values(s.ciclos).filter(x=>x.completo).length;
+    if(n>=1)s.insignias.push("primera");
+    if(n>=Math.ceil(NQ()/2))s.insignias.push("mitad");
+    if(n>=NQ()){s.insignias.push("final");s.terminado=true;
+      s.encuesta={e1:3+Math.floor(rnd()*3),e2:3+Math.floor(rnd()*3),e3:2+Math.floor(rnd()*4),
+        e4: rnd()<.5?"No entendí al principio que tenía que comentar para ganar la estrella, pensé que bastaba con responder.":"",
+        e5: rnd()<.6?"Que las matrices se vean completas en el celular sin tener que desplazar hacia el lado.":"",ts:t};
+      DB.eventos.push({ts:t,cod:c,tipo:"encuesta_enviada",q:"",paso:"",extra:""});
+    }
+    if(Object.values(s.ciclos).filter(x=>x.completo&&x.chars>=2*MIN()).length>=3) s.insignias.push("voz");
+    DB.sesiones[c]=s;
+  }
+  DB.eventos.sort((a,b)=>a.ts-b.ts);
+  guardar(); rol="doc"; tab="diagnostico"; render();
+  toast(CURSO.length+" estudiantes simulados");
+}
+function forzarCoach(){
+  // enciende y apaga el asistente para todo el curso, para poder comparar las dos versiones
+  DB.config.coach = DB.config.coach==="off" ? "on" : "off";
+  guardar(); render();
+  toast(DB.config.coach==="on"
+    ? "Asistente activado para todo el curso"
+    : "Asistente apagado · así se ve el flujo del brief original");
+}
+function modoPiloto(){
+  const b=$("#demobar"); if(b) b.hidden=true;
+  toast("Barra oculta. Recarga la página para recuperarla.");
+}
+function borrarTodo(){
+  if(!confirm("Se borran todas las sesiones, respuestas y eventos guardados en este navegador. ¿Seguro?")) return;
+  localStorage.removeItem(KEY); cod=null; vista="login"; DB=dbNueva(); guardar(); rol="est"; render();
+  toast("Datos borrados");
+}
+
+/* ---------- registro de abandono al salir ---------- */
+function marcarAbandono(){
+  if(!cod||!S()) return;
+  const s=S(); s.ultima=ahora();
+  const abierto=Object.entries(s.ciclos||{}).find(([k,c])=>!c.completo&&c.paso!=="listo");
+  if(abierto) DB.eventos.push({ts:ahora(),cod:cod,tipo:"abandono",q:abierto[0],paso:abierto[1].paso,extra:"salió sin completar el ciclo"});
+  guardar();
+}
+window.addEventListener("pagehide",marcarAbandono);
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="hidden") marcarAbandono(); });
+
+/* ---------- alto real de la cabecera, para que la barra de progreso no se solape ---------- */
+function medirHeader(){
+  const h=document.querySelector("header");
+  if(h) document.documentElement.style.setProperty("--hh", h.offsetHeight+"px");
+}
+window.addEventListener("resize",medirHeader);
+window.addEventListener("load",medirHeader);
+
+/* ------------------------------ arranque ------------------------------ */
+cargar();
+render();
+medirHeader();
+if(/[?&]piloto=1/.test(location.search)){ const b=$("#demobar"); if(b) b.hidden=true; medirHeader(); }
+</script>
+</body>
+</html>

@@ -166,6 +166,8 @@ a{color:var(--celeste)}
 .progress{height:8px;background:var(--claro-a);border-radius:var(--r);overflow:hidden}
 .progress i{display:block;height:100%;background:var(--celeste);transition:width .45s ease}
 .stars-count{font-weight:700;color:var(--amarillo-osc);white-space:nowrap;letter-spacing:0}
+.stars-count .st{font-size:15px}
+.stars-count .st.media{opacity:.4}
 
 /* ---------------- pregunta ---------------- */
 .stem{font-size:18px;line-height:32px;letter-spacing:.5px;margin:14px 0 20px}
@@ -346,14 +348,14 @@ nav.tabs button.active{color:var(--celeste);border-bottom-color:var(--celeste)}
 <header>
   <div class="logo">
     <img src="https://kit-digital-uc-prod.s3.amazonaws.com/assets/logo-uc-blanco.svg" alt="Pontificia Universidad Católica de Chile" onerror="this.remove();document.querySelector('header .logo').classList.add('sinlogo')">
-    <b>Ágora</b><span>MAT1219 · Álgebra Lineal <small>v4.2</small></span>
+    <b>Ágora</b><span>MAT1219 · Álgebra Lineal <small>v4.3</small></span>
   </div>
   <div class="spacer"></div>
   <div id="hright"></div>
 </header>
 
 <div class="demobar" id="demobar">
-  <b>Maqueta v4.2 · Kit Digital UC</b>
+  <b>Maqueta v4.3 · Kit Digital UC</b>
   <span class="muted">— IA simulada (reglas, no un modelo). Controles de demostración:</span>
   <button id="mb-est" onclick="setRol('est')">Vista estudiante</button>
   <button id="mb-doc" onclick="setRol('doc')">Vista docente</button>
@@ -708,6 +710,17 @@ function cicloNuevo(){ return {ini:ahora(), paso:"responder", resp:null, tResp:n
 function C(qid){ const s=S(); if(!s.ciclos[qid]) { s.ciclos[qid]=cicloNuevo(); } s.ciclos[qid]._qid=qid; return s.ciclos[qid]; }
 function completos(s){ return Object.values(s.ciclos||{}).filter(c=>c.completo).length }
 function estrellas(s){ return Object.values(s.ciclos||{}).filter(c=>c.completo&&c.chars>0).length }
+function medias(s){ return Object.values(s.ciclos||{}).filter(c=>c.completo&&!c.chars).length }
+function puntos(s){ return estrellas(s) + 0.5*medias(s) }
+function fmtPuntos(n){ return (n%1?n.toFixed(1).replace(".",","):String(n)) }
+function glifos(s){
+  return DB.preguntas.map(q=>{
+    const c=(s.ciclos||{})[q.id];
+    if(!c||!c.completo) return "";
+    return c.chars ? '<span class="st">⭐</span>'
+                   : '<span class="st media" title="Media estrella: completaste la pregunta sin comentar">⭐</span>';
+  }).join("");
+}
 function sustantivos(s){ return Object.values(s.ciclos||{}).filter(c=>c.completo&&c.chars>=SUSTANTIVO).length }
 
 function revisarInsignias(){
@@ -944,8 +957,8 @@ function responderEst(qid,txt){
   // 3. dudas sobre el largo
   if(/cu[aá]nto|cu[aá]ntos|caracteres|m[ií]nimo|largo|corto|suficiente|falta|obligatorio|tengo que comentar/i.test(bajo))
     return {t: (x.c.chars||0)===0
-      ? `No hay largo mínimo ni es obligatorio: puedes seguir sin comentar. Dicho eso, una sola frase que diga <b>qué alternativa te tentó y por qué</b> vale más que cinco de relleno — y es lo que da la estrella.`
-      : `No hay mínimo ni es obligatorio. Llevas <b>${x.c.chars}</b> caracteres y con eso basta si se entiende sin haber visto la pregunta; escribir más no lo mejora por sí solo.`};
+      ? `No hay largo mínimo ni es obligatorio: si sigues sin comentar igual ganas <b>media estrella</b>. Dicho eso, una sola frase que diga <b>qué alternativa te tentó y por qué</b> vale más que cinco de relleno — y esa sí da la estrella completa.`
+      : `No hay mínimo ni es obligatorio. Llevas <b>${x.c.chars}</b> caracteres, y con eso la <b>estrella completa</b> ya es tuya — sin comentario habría sido media. Escribir más no lo mejora por sí solo: lo que importa es que se entienda sin haber visto la pregunta.`};
 
   // 4. no sabe qué escribir: se le ofrece un ángulo sacado de su propia valoración
   if(/no s[eé]|ni idea|no se me ocurre|qu[eé] escribo|qu[eé] pongo|ayuda|ay[uú]dame|no sabr[ií]a|c[oó]mo empiez|c[oó]mo empez|por d[oó]nde|c[oó]mo parto|partir|qu[eé] se supone|qu[eé] digo|qu[eé] tengo que (decir|escribir|poner)|en blanco|nada que decir/i.test(bajo)){
@@ -1134,10 +1147,10 @@ function pantallaBienvenida(){
 function empezar(){ vista="ciclo"; render(); }
 
 function barraProgreso(){
-  const s=S(), n=completos(s), e=estrellas(s);
+  const s=S(), n=completos(s), p=puntos(s);
   return `<div class="line" style="display:flex;justify-content:space-between;font-size:13px;margin:14px 0 7px">
       <span class="muted">Has completado <b>${n}</b> de <b>${NQ()}</b> preguntas</span>
-      <span class="stars-count">${e?"⭐".repeat(Math.min(e,NQ())):"sin estrellas aún"}</span></div>
+      <span class="stars-count">${p?glifos(s)+" "+fmtPuntos(p):"sin estrellas aún"}</span></div>
     <div class="progress"><i style="width:${pct(n,NQ())}%"></i></div>`;
 }
 
@@ -1159,7 +1172,7 @@ function pantallaCiclo(){
   <div class="topbar">
     <div class="line">
       <span><b>Pregunta ${i+1}</b> de ${NQ()}</span>
-      <span class="stars-count">${estrellas(s)} ⭐</span>
+      <span class="stars-count">${fmtPuntos(puntos(s))} ⭐</span>
     </div>
     <div class="progress"><i style="width:${pct(n,NQ())}%"></i></div>
   </div>
@@ -1275,15 +1288,15 @@ function bloqueComentario(q,c){
     <textarea id="coment" placeholder="Por ejemplo: dudé entre B y C porque…" oninput="escribir('${q.id}',this.value)">${esc(c.com||"")}</textarea>
     <div class="counter" id="cnt">${n} caracteres${n>=SUSTANTIVO?" · comentario extenso":""}</div>
     ${coachHTML(c)}
-    <button class="btn block ok" style="margin-top:8px" id="btn-fin" onclick="completarCiclo('${q.id}')">${n?"Completar y ganar mi estrella ⭐":"Continuar sin comentar"}</button>
-    <div class="note">Escribe lo que quieras, del largo que quieras. Puedes seguir sin comentar, aunque entonces no ganas la estrella de esta pregunta. Solo la docente lee tu comentario: tus compañeros no lo ven.</div>
+    <button class="btn block ok" style="margin-top:8px" id="btn-fin" onclick="completarCiclo('${q.id}')">${n?"Completar y ganar mi estrella ⭐":"Continuar sin comentar · media estrella"}</button>
+    <div class="note">Escribe lo que quieras, del largo que quieras. Si sigues sin comentar la pregunta cuenta igual y ganas media estrella. Solo la docente lee tu comentario: tus compañeros no lo ven.</div>
   </div>`;
 }
 function escribir(qid,v){
   const c=C(qid); c.com=v; c.chars=v.trim().length;
   const n=c.chars, el=$("#cnt"), b=$("#btn-fin");
   if(el){ el.textContent=n+" caracteres"+(n>=SUSTANTIVO?" · comentario extenso":""); el.className="counter"+(n>=SUSTANTIVO?" ok":""); }
-  if(b) b.textContent = n?"Completar y ganar mi estrella ⭐":"Continuar sin comentar";
+  if(b) b.textContent = n?"Completar y ganar mi estrella ⭐":"Continuar sin comentar · media estrella";
   if(c.coach && c.coach.charsAviso!=null && n>c.coach.charsAviso+15) c.coach.edito=true;
   if(coachActivo()){
     clearTimeout(window._ce);
@@ -1310,7 +1323,7 @@ function responderBien(txt){
   if(/salir|cerrar|volver|despu[eé]s|pausa|guarda/i.test(b))
     return `Sí, puedes salir en cualquier momento. Todo queda guardado en este dispositivo y al volver con tu código sigues donde ibas.`;
   if(/qu[eé] hago|qu[eé] tengo que|c[oó]mo funciona|explic|pasos|en qu[eé] consiste|no entiendo|se trata|de qu[eé] va|qu[eé] es esto|para qu[eé] es|qu[eé] hay que hacer/i.test(b))
-    return `Tres pasos por pregunta:<ul><li><b>Respondes</b> y ves de inmediato si acertaste, con la solución explicada.</li><li><b>Valoras</b> la pregunta en cuatro criterios: si se entendía, qué tan difícil era, si las alternativas incorrectas eran creíbles y si la explicación te sirvió.</li><li><b>Comentas</b> para quien la diseñó. No hay largo mínimo y puedes saltarlo, pero la estrella es por completar los tres.</li></ul>`;
+    return `Tres pasos por pregunta:<ul><li><b>Respondes</b> y ves de inmediato si acertaste, con la solución explicada.</li><li><b>Valoras</b> la pregunta en cuatro criterios: si se entendía, qué tan difícil era, si las alternativas incorrectas eran creíbles y si la explicación te sirvió.</li><li><b>Comentas</b> para quien la diseñó. No hay largo mínimo y puedes saltarlo: sin comentario ganas media estrella, con comentario la estrella completa.</li></ul>`;
   if(/comentario|escribir|qu[eé] escribo|redact/i.test(b))
     return `El comentario es para quien diseñó la pregunta: qué te hizo dudar, si alguna alternativa incorrecta te pareció tentadora y por qué, o qué del enunciado mejorarías. Cuando llegues ahí voy a estar acompañándote.`;
   if(/celular|tel[eé]fono|computador|dispositivo/i.test(b))
@@ -1452,12 +1465,13 @@ function completarCiclo(qid){
   const c=C(qid), s=S();
   c.tCom=ahora(); c.completo=true; c.paso="listo";
   c.omitido=!c.chars;
-  ev(c.chars?"comentario_enviado":"comentario_omitido",qid,"comentar", c.chars+" caracteres");
+  ev(c.chars?"comentario_enviado":"comentario_omitido",qid,"comentar", c.chars+" caracteres · "+(c.chars?"estrella completa":"media estrella"));
   if(c.coach && c.coach.visto) ev("coach_resultado",qid,"comentar",
       "avisos="+c.coach.visto+" editó="+(c.coach.edito?"sí":"no")+" caracteres "+c.coach.charsAviso+"→"+c.chars);
   ev("ciclo_completo",qid,"listo", "duracion_s="+seg(c.ini,c.tCom));
   s.ultima=ahora(); guardar();
-  if(c.chars) animarEstrella("⭐"); else toast("Seguimos sin comentario en esta pregunta");
+  if(c.chars) animarEstrella("⭐");
+  else { animarEstrella('<span style="opacity:.45">⭐</span>'); toast("Media estrella: avanzaste sin comentar"); }
   const nuevas=revisarInsignias(); guardar();
   setTimeout(()=>{
     if(nuevas.length){ animarEstrella(nuevas[0].ic); toast("Nueva insignia: "+nuevas[0].n); }
@@ -1524,7 +1538,8 @@ function pantallaFin(){
   return `<div class="card" style="text-align:center">
     <div style="font-size:56px;line-height:1.2">🏁</div>
     <h1 style="margin-top:6px">Listo, ${esc(cod)}</h1>
-    <p>Completaste <b>${n} de ${NQ()}</b> preguntas y ganaste <b>${estrellas(s)}</b> estrella(s).</p>
+    <p>Completaste <b>${n} de ${NQ()}</b> preguntas y reuniste <b>${fmtPuntos(puntos(s))}</b> estrella(s).</p>
+    ${medias(s)?`<p class="muted small">${estrellas(s)} completa(s) y ${medias(s)} media(s), por las preguntas en que avanzaste sin comentar.</p>`:""}
     <div class="badges" style="justify-content:center">
       ${INSIGNIAS.map(b=>`<div class="badge ${s.insignias.indexOf(b.id)>=0?"got":""}">
         <span class="ic">${b.ic}</span><b>${esc(b.n)}</b><span class="muted small">${esc(b.d)}</span></div>`).join("")}
@@ -2088,6 +2103,7 @@ function docRubrica(){
       <tr><td>Visibilidad de los comentarios</td><td><b>Solo la docente</b></td></tr>
       <tr><td>Anonimato</td><td><b>No</b> — la lista de inicio asocia nombre y código</td></tr>
       <tr><td>Comentario</td><td><b>Opcional y sin largo mínimo</b></td></tr>
+      <tr><td>Recompensa por ciclo</td><td><b>1 estrella</b> con comentario · <b>½</b> sin él</td></tr>
       <tr><td>Ranking entre compañeros</td><td><b>No hay</b></td></tr>
       <tr><td>Preguntas por estudiante</td><td><b>Todas (${NQ()})</b></td></tr>
       <tr><td>Recompensa</td><td><b>Solo por ciclo completo</b></td></tr>
@@ -2198,8 +2214,8 @@ function csvComentarios(){
     ...porCiclo((s,q,c,i)=>[s.codigo,i+1,q.id,c.chars||0,c.com||"",c.tCom?new Date(c.tCom).toISOString():""])]);
 }
 function csvCiclos(){
-  dl("agora_ciclos.csv",[["codigo","pregunta","id_pregunta","completo","paso_alcanzado","s_responder","s_valorar","s_comentar","s_total","aperturas_sesion"],
-    ...porCiclo((s,q,c,i)=>[s.codigo,i+1,q.id,c.completo?1:0,c.paso,
+  dl("agora_ciclos.csv",[["codigo","pregunta","id_pregunta","completo","estrella","paso_alcanzado","s_responder","s_valorar","s_comentar","s_total","aperturas_sesion"],
+    ...porCiclo((s,q,c,i)=>[s.codigo,i+1,q.id,c.completo?1:0,c.completo?(c.chars?1:0.5):0,c.paso,
       seg(c.ini,c.tResp),seg(c.tResp,c.tRub),seg(c.tRub,c.tCom),seg(c.ini,c.tCom),s.aperturas])]);
 }
 function csvEventos(){
